@@ -1,4 +1,4 @@
-import { USER_URL,POST_URL } from "../config";
+import { USER_URL,POST_URL } from "../config.js";
 
 const form = document.getElementById("form");
 

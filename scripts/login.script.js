@@ -1,4 +1,4 @@
-import { USER_LOGIN_URL} from "../config";
+import { USER_LOGIN_URL} from "../config.js";
 
 const form = document.getElementById("form");
 const regBtn = document.getElementById("reg-btn") 
@@ -84,6 +84,7 @@ form.addEventListener("submit", (e) => {
        setCookieWithExpirationInSeconds("id",res.data.user._id,parseInt(res.data.expiry))
        setCookieWithExpirationInSeconds("username",res.data.user.username,parseInt(res.data.expiry))
        setCookieWithExpirationInSeconds("avatar",res.data.user.avatar,parseInt(res.data.expiry))
+       document.location.href = "../pages/home.html"
        return
     })
     .catch((err) => {
