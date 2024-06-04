@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../style/home.main.style.css" />
+    <link rel="stylesheet" href="../style/home.mobile.style.css">
+    <script type="module" src="../scripts/home.script.js"></script>
+
+    <title>home</title>
+  </head>
+  <body>
+    <div class="main">
+      <header>
+        <nav>
+          <div class="logo-container">
+            <div class="logo">Connectify</div>
+          </div>
+          <div class="nav-items">
+            <span class="h-icon">
+              <img src="../assests/h-icon.webp" alt="">
+            </span>
+            <ul class="nav-item-list">
+              <li id="home"><a href="../pages/home.html">home</a></li>
+              <li id="write"><a href="../pages/write.html">write</a></li>
+              <li id="posts"><a href="#posts">posts</a></li>
+              <li id="about"><a href="#">about</a></li>
+              <span id="avatar-li"><img src="" alt="avatar" id="avatar"/></span>
+              <li class="login-btn" id="login-btn"><a href="#">login</a></li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div class="hero-content">
+          <div class="title">Welcome to Connectify</div>
+          <div class="sub-title">let's connect</div>
+          <p class="desc">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni,
+            veniam. Rerum facilis quos ducimus quidem ipsam, ipsa ullam?
+            Reiciendis libero fugiat iusto numquam, deleniti architecto nobis
+            quae enim molestias provident!
+          </p>
+        </div>
+      </section>
+
+     
+    </div>
+
+    <section class="posts-section" id="posts">
+        <div class="post-container">
+            <span class="post-heading">
+                Posts
+            </span>
+            <ul id="post-list-container">
+            </ul>
+            <div class="loader-container" id="loader">
+              <span class="loader"></span>
+            </div>
+        </div>
+      </section>
+
+      <section class="not-login-section" id="not-login-section">
+          <h1>404</h1>
+          <p>OOPS! You are not logged in !</p>
+          <button class="login-btn">click to login</button>
+      </section>
+  </body>
+</html>

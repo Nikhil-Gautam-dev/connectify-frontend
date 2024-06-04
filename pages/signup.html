@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../style/signup.style.css" />
+    <script type="module" src="../scripts/signup.script.js"></script>
+    <title>signup-user</title>
+  </head>
+  <body>
+    <div class="main">
+      <div class="container">
+        <h2>Sign-up</h2>
+        <form id="form">
+          <div class="field">
+            <label for="username">username</label>
+            <input type="text" name="username" id="username" required/>
+          </div>
+          <div class="field">
+            <label for="email">email</label>
+            <input type="text" name="email" id="email" required/>
+          </div>
+          <div class="field">
+            <label for="password">password</label>
+            <input type="text" name="password" id="password" required/>
+          </div>
+          <div>
+            <label for="">gender</label>
+          </div>
+          <div class="g-container">
+            <div class="g-option">
+              <input type="radio" name="gender" id="male" value="M" required/>
+              <label for="male">male</label>
+            </div>
+            <div class="g-option">
+              <input type="radio" name="gender" id="female" value="F" required/>
+              <label for="female">female</label>
+            </div>
+            <div class="g-option">
+              <input type="radio" name="gender" id="other" value="O" required/>
+              <label for="other">other</label>
+            </div>
+          </div> 
+
+          <div class="field">
+            <label>upload avatar</label>
+            <input type="file" id="avatar" accept="image/png, image/jpeg">
+          </div>
+
+          <div class="submit-btn">
+            <input type="submit" value="submit" id="submit" class="sub-disable-btn">
+          </div>
+        </form>
+      </div>
+      <div class="loader-container" id="loader">
+        <span class="loader"></span>
+      </div>
+    </div>
+  </body>
+</html>

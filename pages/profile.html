@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../style/profile.style.css" />
+    <script type="module" src="../scripts/profile.script.js"></script>
+    <title>profile</title>
+  </head>
+  <body>
+    <div class="main">
+      <header>
+        <nav>
+          <div class="logo-container">
+            <div class="logo">Connectify</div>
+          </div>
+          <div class="nav-items">
+            <span class="h-icon">
+              <img src="../assests/h-icon.webp" alt="" />
+            </span>
+            <ul class="nav-item-list">
+              <li id="home"><a href="../pages/home.html">home</a></li>
+              <li id="write"><a href="../pages/write.html">write</a></li>
+              <li id="posts"><a href="#posts">posts</a></li>
+              <li id="about"><a href="#">about</a></li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div class="hero-content">
+          <div class="profile-img">
+            <img src="../assests/avatar.jpg" alt="" id="avatar"/>
+          </div>
+          <div class="username" id="username">loading..</div>
+          <div class="follower-container">
+            <span id="follower-count">loadin..</span>
+            <span>followers</span>
+          </div>
+
+          <p class="bio" id="bio">
+            loading..
+          </p>
+          <textarea id="edit-bio-textarea" maxlength="100"></textarea>
+
+          
+
+
+          <button class="edit-bio-btn" id="edit-bio-btn">edit</button>
+          <div class="loader-container" id="edit-loader">
+            <span class="loader"></span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+
+
+
+    <section class="posts-section" id="posts">
+      <div class="post-container">
+        <span class="post-heading"> Posts </span>
+        <ul id="post-list-container">
+         
+        </ul>
+        <div class="loader-container" id="loader">
+          <span class="loader"></span>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

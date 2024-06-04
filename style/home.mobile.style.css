@@ -1,0 +1,89 @@
+@media screen and (max-width: 480px) {
+    *{
+        padding: 0px;
+    }
+    .main{
+        width: 100%;
+    }
+
+    .logo{
+        font-size: 1rem;
+    }
+  
+    .nav-items>ul{
+        margin: 0px;
+        display: none;
+        flex-direction: column;
+        background: white;
+        padding: 10px;
+        position: absolute;
+       right: 0%; 
+       width: 30%;
+       border-radius: 10px;
+       box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .h-icon{
+        display: block;
+    }
+
+    .h-icon>img{
+        height: 20px;
+    }
+
+    .h-icon:hover+.nav-item-list{
+        display: flex;
+    }
+    .nav-items>ul>li>a{
+        font-size: 0.8rem;
+        color: black;
+    }
+
+    .hero{
+        padding-top: 100px;
+    }
+
+    .title{
+        font-size: 2rem;
+    }
+
+    .sub-title{
+        font-size: 1rem;
+    }
+
+    .hero-content>p{
+        font-size: 0.7rem;
+        text-align: center;
+        width: 70%;
+    }
+
+    .post-heading{
+        font-size: 1.2rem;
+        width: 110px;
+    }
+
+    .not-login-section{
+        margin: 10px;
+    }
+
+    .not-login-section>h1{
+        font-size: 6rem;
+        letter-spacing: 5px;
+    }
+
+    .not-login-section>p{
+        font-size: 1.2rem;
+    }
+
+    .post-container>ul{
+        grid-template-columns: auto;
+        padding: 20px;
+        justify-content: center;
+    }
+
+    #avatar{
+        width: 150%;
+        margin: 0px;
+    }
+
+}

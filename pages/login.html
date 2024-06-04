@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/signup.style.css">
+    <script type="module" src="../scripts/login.script.js"></script>
+    <title>login</title>
+</head>
+<body>
+    <div class="main">
+        <div class="container">
+          <h2>login</h2>
+          <form id="form">
+            <div class="field">
+              <label for="username">username or email</label>
+              <input type="text" name="username" id="username" required/>
+            </div>
+            <div class="field">
+              <label for="password">password</label>
+              <input type="text" name="password" id="password" required/>
+            </div>
+           
+            <div class="new-acc">
+               <h4>New? click <span id="reg-btn">here</span> to register</h4>
+            </div>
+  
+            <div class="submit-btn">
+              <input type="submit" value="login" id="submit">
+            </div>
+          </form>
+        </div>
+        <div class="loader-container" id="loader">
+          <span class="loader"></span>
+        </div>
+      </div>
+</body>
+</html>
