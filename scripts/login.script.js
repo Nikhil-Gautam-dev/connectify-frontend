@@ -1,4 +1,5 @@
 import { USER_LOGIN_URL} from "../config.js";
+import { setCookieWithExpirationInSeconds } from "./utils.script.js";
 
 const form = document.getElementById("form");
 const regBtn = document.getElementById("reg-btn") 
@@ -30,12 +31,7 @@ form.addEventListener("submit", (e) => {
       "linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,0.4515056022408963) 56%, rgba(252,176,69,1) 100%)";
   };
 
-  function setCookieWithExpirationInSeconds(name, value, seconds) {
-    let date = new Date();
-    date.setTime(date.getTime() + (seconds * 1000)); // Convert seconds to milliseconds
-    let expires = "expires=" + date.toUTCString();
-    document.cookie = name + "=" + value + "; " + expires + "; path=/";
-}
+  
 
   refreshOnError(false)
 

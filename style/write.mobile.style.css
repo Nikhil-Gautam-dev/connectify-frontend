@@ -13,7 +13,7 @@
     }
 
     .title{
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
     .sub-title{
         font-size: 1rem;
@@ -41,18 +41,18 @@
     }
 
     label{
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 
     input{
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
     .upload-img-container>label{
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 
     #postImg{
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 
     #create-btn{

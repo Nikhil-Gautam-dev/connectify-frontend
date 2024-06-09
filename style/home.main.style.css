@@ -5,6 +5,15 @@
     color: black;
 }
 
+.main{
+    background-image: url("../assests/bg.avif");
+padding-top: 10px;
+border-bottom-left-radius: 50%;
+border-bottom-right-radius: 50%;
+box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+;
+}
+
 
 /* hero section styling */
 
@@ -189,7 +198,7 @@
 /* not login section */
 
 .not-login-section{
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;

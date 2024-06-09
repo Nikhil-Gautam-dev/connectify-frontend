@@ -1,19 +1,21 @@
 import { getCookie, getQueryParams } from "./utils.script.js";
 import { POST_URL, USER_URL } from "../config.js";
 import { customHeader } from "./footerAndHeader.script.js";
+import { setCookieWithExpirationInSeconds,clearCookie } from "./utils.script.js";
 
 const token = getCookie("accessToken");
 const postListContainerElement = document.getElementById("post-list-container");
 const loaderDiv = document.getElementById("loader");
 
 const editBioBtn = document.getElementById("edit-bio-btn");
+const cancelBioBtn = document.getElementById("cancel-bio-btn");
 
 const currURL = window.location.href;
 
 const isNotUser = currURL.includes("username");
 
 const getUserPosts = async (username) => {
-  const URL = POST_URL + "query/search/?page=1&limit=8&creator=" + username
+  const URL = POST_URL +`query/search/?page=1&limit=8&creator=${username}`
   let posts = "";
 
   await fetch(URL, {
@@ -246,8 +248,14 @@ const updateBio = async (newBio)=>{
 
 window.onload = async () => {
   console.log(isNotUser);
-  console.log(getQueryParams(currURL));
+  console.log(getCookie("username"));
   customHeader()
+  const loginBtn = document.getElementById("login-btn")
+  const avatarLiElement = document.getElementById("avatar-li")
+  loginBtn.style.display = "none"
+  avatarLiElement.style.display = "none"
+  cancelBioBtn.style.display = "none"
+
   editBioBtn.style.display = isNotUser ? "none" : "flex"
   const posts = await getUserPosts(
     isNotUser ? getQueryParams(currURL).username : getCookie("username")
@@ -284,18 +292,26 @@ postListContainerElement.addEventListener("click", async (e) => {
 });
 
 
+
+
 editBioBtn.addEventListener("click", async (e) => {
   const bioTextArea = document.getElementById("edit-bio-textarea");
   const bio = document.getElementById("bio");
   const editLoader = document.getElementById("edit-loader")
- 
+
+  
   if (e.target.innerText == "edit") {
+    cancelBioBtn.style.display = "flex"
     editBioBtn.innerText = "save";
 
     bioTextArea.style.display = "flex";
+    bioTextArea.innerText = bio.innerText
+    setCookieWithExpirationInSeconds("oldBio",bio.innerText,86400 )
     bio.style.display = "none";
   } else {
     console.log("hello");
+    cancelBioBtn.style.display = "none"
+
     editLoader.style.display="flex"
     editBioBtn.style.display="none"
 
@@ -313,6 +329,7 @@ editBioBtn.addEventListener("click", async (e) => {
     const isBioUpdated = await updateBio(newBio)
 
     if(isBioUpdated){
+      clearCookie("oldBio")
       bio.innerText = newBio
       bioTextArea.style.display = "none";
       bio.style.display = "flex";
@@ -327,3 +344,16 @@ editBioBtn.addEventListener("click", async (e) => {
     }}
   }
 });
+
+cancelBioBtn.addEventListener("click",()=>{
+
+  const bioTextArea = document.getElementById("edit-bio-textarea");
+  const bio = document.getElementById("bio");
+
+  console.log(getCookie("oldBio"))
+  editBioBtn.innerText = "edit" 
+  bioTextArea.style.display = "none"
+  cancelBioBtn.style.display = "none" 
+  bio.style.display = "flex" 
+  bio.innerText = getCookie("oldBio")
+})

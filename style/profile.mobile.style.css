@@ -1,4 +1,12 @@
 @media screen and (max-width: 480px) {
+
+    .main{
+        background-color:#0451df ;
+        padding: 10px 0px;
+        border-bottom-left-radius:0%;
+        border-bottom-right-radius: 0%;
+    }
+    
     #avatar-li>img{
         width: 150%;
         margin: 0px;
@@ -13,11 +21,16 @@
         font-size: 1rem;
     }
 
+    .hero-content{
+        width: 100%;
+        padding: 0px 20px;
+    }
+
     .hero-content>p{
         font-size: 1rem;
         min-width: 0%;
         min-height: 0%;
-        width: fit-content;
+        width: 100%;
         max-width: 400px;
         padding: 10px;
     }
@@ -25,8 +38,9 @@
     #edit-bio-textarea{
         font-size: 1rem;
         min-width:0%;
-        min-height: 0%;
+        min-height: 100px;
         padding: 15px;
+        width: 100%;
         resize: vertical;
     }
 
@@ -34,5 +48,16 @@
         grid-template-columns: auto;
         padding: 20px;
         justify-content: center;
+    }
+
+    .edit-bio-btn:hover{
+        color: black;
+        background-color: white;
+    
+    }
+    .cancel-bio-btn:hover{
+        color: black;
+        background-color: white;
+    
     }
 }

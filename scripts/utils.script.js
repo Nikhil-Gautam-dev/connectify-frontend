@@ -46,4 +46,16 @@ const navigateToProfile = ()=>{
     document.location.href = "../pages/profile.html"
 }
 
-export {currentPageOutline,isUserLoggedIn,getCookie,getQueryParams,navigateToProfile}
+function setCookieWithExpirationInSeconds(name, value, seconds) {
+    let date = new Date();
+    date.setTime(date.getTime() + (seconds * 1000)); // Convert seconds to milliseconds
+    let expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + "; " + expires + "; path=/";
+}
+
+function clearCookie(name) {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  }
+  
+
+export {currentPageOutline,isUserLoggedIn,getCookie,getQueryParams,navigateToProfile,setCookieWithExpirationInSeconds, clearCookie}

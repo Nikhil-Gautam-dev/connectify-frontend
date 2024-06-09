@@ -138,6 +138,7 @@ window.onload = async () => {
   customHeader()
   const userAvatarElement = document.getElementById("avatar");
   const errElement = document.getElementById("err-info");
+  
 
   errElement.style.display = "none";
 
