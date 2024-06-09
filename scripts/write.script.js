@@ -1,5 +1,6 @@
 import { POST_URL } from "../config.js";
 import { getCookie, getQueryParams } from "./utils.script.js";
+import { customHeader } from "./footerAndHeader.script.js";
 
 const form = document.getElementById("form");
 const loaderDiv = document.getElementById("loader");
@@ -211,6 +212,9 @@ form.addEventListener("submit", async (e) => {
 });
 
 window.onload = async () => {
+  customHeader()
+  const userAvatar = document.getElementById("avatar");
+  const loginbtns = document.getElementsByClassName("login-btn");
   if (!token) {
     notLoginSection.style.display = "flex";
     loaderDiv.style.display = "none";
@@ -243,18 +247,18 @@ window.onload = async () => {
     RTEPlugin()
     contentArea.style.display = "flex"
     textAreaLoaderDiv.style.display = "none"
+    Array.from(loginbtns).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.location.href = "../pages/login.html";
+      });
+    });
+    
+    
+    userAvatar.addEventListener("click",()=>{
+      
+      document.location.href = `../pages/profile.html`
+    })
 
   }
 };
 
-Array.from(loginbtns).forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.location.href = "../pages/login.html";
-  });
-});
-
-
-userAvatar.addEventListener("click",()=>{
-  
-  document.location.href = `../pages/profile.html`
-})

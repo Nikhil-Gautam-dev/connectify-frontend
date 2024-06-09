@@ -1,0 +1,24 @@
+@media screen and (max-width: 480px) {
+    .main{
+        background-color:#0451df ;
+        padding: 10px 0px;
+    }
+
+    .title-container>h1{
+        font-size: 1.2rem; 
+        margin-top: 40px;
+    }
+
+    .img-container{
+        padding: 2px;
+    }
+
+    .user-info-section{
+        padding: 10px;
+    }
+
+
+    .err-info{
+        display: none;
+    }
+}

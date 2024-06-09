@@ -1,5 +1,6 @@
 import { getCookie, getQueryParams } from "./utils.script.js";
 import { POST_URL, USER_URL } from "../config.js";
+import { customHeader } from "./footerAndHeader.script.js";
 
 const token = getCookie("accessToken");
 const postListContainerElement = document.getElementById("post-list-container");
@@ -246,6 +247,7 @@ const updateBio = async (newBio)=>{
 window.onload = async () => {
   console.log(isNotUser);
   console.log(getQueryParams(currURL));
+  customHeader()
   editBioBtn.style.display = isNotUser ? "none" : "flex"
   const posts = await getUserPosts(
     isNotUser ? getQueryParams(currURL).username : getCookie("username")

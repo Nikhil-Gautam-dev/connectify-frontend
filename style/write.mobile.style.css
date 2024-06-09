@@ -1,0 +1,76 @@
+@media screen and (max-width: 480px) {
+    .main{
+        /* background-image: url("../assests/bg.avif"); */
+    padding-top: 10px;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding-top: 20px;
+    }
+
+    .hero{
+        padding-top: 100px;
+    }
+
+    .title{
+        font-size: 2rem;
+    }
+    .sub-title{
+        font-size: 1rem;
+    }
+    .hero-content>p{
+        text-align: center;
+        width: 100%;
+        padding: 0px 50px; 
+        font-size: 0.7rem;
+    }
+
+    .write-section{
+        gap: 40px;
+    }
+
+    .write-heading{
+        font-size: 1rem;
+        width: 150px;
+        padding: 10px;
+    }
+
+    .tags-container{
+        display: flex;
+        gap: 20px;
+    }
+
+    label{
+        font-size: 1rem;
+    }
+
+    input{
+        font-size: 1rem;
+    }
+    .upload-img-container>label{
+        font-size: 1rem;
+    }
+
+    #postImg{
+        font-size: 1rem;
+    }
+
+    #create-btn{
+        width: 120px;
+        padding: 10px;
+    }
+
+    .btn-loader-container{
+        padding: 10px;
+        width: 100%;
+        justify-content: left;
+    }
+
+    .loader-container{
+        width: auto;
+    }
+    #avatar{
+        width: 150%;
+        margin: 0px;
+    }
+}

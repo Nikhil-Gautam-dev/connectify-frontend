@@ -2,41 +2,14 @@
     *{
         padding: 0px;
     }
+
     .main{
-        width: 100%;
-    }
-
-    .logo{
-        font-size: 1rem;
-    }
-  
-    .nav-items>ul{
-        margin: 0px;
-        display: none;
-        flex-direction: column;
-        background: white;
-        padding: 10px;
-        position: absolute;
-       right: 0%; 
-       width: 30%;
-       border-radius: 10px;
-       box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    }
-
-    .h-icon{
-        display: block;
-    }
-
-    .h-icon>img{
-        height: 20px;
-    }
-
-    .h-icon:hover+.nav-item-list{
-        display: flex;
-    }
-    .nav-items>ul>li>a{
-        font-size: 0.8rem;
-        color: black;
+        background-image: url("../assests/bg.avif");
+    padding-top: 10px;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    ;
     }
 
     .hero{
@@ -44,11 +17,13 @@
     }
 
     .title{
-        font-size: 2rem;
+        font-size: 1.5rem;
+        text-align: center;
     }
 
     .sub-title{
         font-size: 1rem;
+    
     }
 
     .hero-content>p{

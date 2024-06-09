@@ -1,12 +1,12 @@
 import { getCookie } from "./utils.script.js";
 import { USER_URL,POST_URL } from "../config.js";
-
+import { customHeader } from "./footerAndHeader.script.js";
 
 const postSection = document.getElementsByClassName("post-section")[0];
 const userInfoSection = document.getElementsByClassName("user-info-section")[0];
 const loaderDiv = document.getElementById("loader");
 const loginbtns = document.getElementsByClassName("login-btn");
-const userAvatarElement = document.getElementById("avatar");
+// const userAvatarElement = document.getElementById("avatar");
 const avatarElement = document.getElementById("writer-avatar");
 const notLoginSectionElement = document.getElementById("not-login-section");
 const followBtn = document.getElementById("follow-btn");
@@ -119,11 +119,31 @@ const setPostAndUser = (post, user) => {
   followerCountElement.innerText = user.followers.length;
 };
 
+const updateFollower = async (username) => {
+  const users = await getUserInfo(username)
+
+  const user = users[0]
+  if(user){
+    const followerCountElement = document.getElementById("follower-count");
+
+    followerCountElement.innerText = user.followers.length;
+  }
+
+}
+
+
 window.onload = async () => {
   console.log(document.cookie);
 
+  customHeader()
+  const userAvatarElement = document.getElementById("avatar");
+  const errElement = document.getElementById("err-info");
+
+  errElement.style.display = "none";
+
   if (!token) {
     console.log("token");
+    
     loaderDiv.style.display = "none";
     userAvatarElement.style.display = "none";
     notLoginSectionElement.style.display = "flex";
@@ -139,6 +159,12 @@ window.onload = async () => {
     Array.from(loginbtns).forEach((btn) => {
       btn.style.display = "none";
     });
+
+
+    userAvatarElement.addEventListener("click",()=>{
+  
+  document.location.href = `../pages/profile.html`
+})
 
     console.log(getCookie("username"))
     console.log(followBtn.dataset.username)
@@ -161,8 +187,9 @@ window.onload = async () => {
       followBtn.style.backgroundColor = isFollowed?"#dd0606":"#06dd6d";
       followBtn.style.border = "2px solid " + isFollowed?"#dd0606":"#06dd6d";
       console.log(users[0]);
-    } else {
-      const errElement = document.getElementById("err-info");
+    } 
+    
+    else {
       loaderDiv.style.display = "none";
       errElement.style.display = "flex";
       console.log("no post id");
@@ -218,6 +245,7 @@ followBtn.addEventListener("click", async (e) => {
     const following = await followUser(followBtn.dataset.username, isFollowed?"DELETE":"POST")
 
     if(following){
+      await updateFollower(followBtn.dataset.username)
       followBtn.style.display = "flex"
       loader.style.display = "none"
     followBtn.innerText = isFollowed?"follow":"unfollow";
@@ -233,12 +261,9 @@ followBtn.addEventListener("click", async (e) => {
 });
 
 
+
 avatarElement.addEventListener("click",()=>{
   
   document.location.href = `../pages/profile.html?username=${avatarElement.dataset.username}`
 })
 
-userAvatarElement.addEventListener("click",()=>{
-  
-  document.location.href = `../pages/profile.html`
-})
