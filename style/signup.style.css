@@ -2,7 +2,7 @@
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Open Sans", "sans-serif";
 }
 
 .main {
@@ -98,12 +98,6 @@ input:focus {
 
 .submit-btn>input:hover {
     background-color: #0084db;
-}
-
-@media screen and (max-width: 480px) {
-    .container {
-        width: 90%;
-    }
 }
 
 

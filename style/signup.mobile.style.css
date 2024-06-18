@@ -1,0 +1,30 @@
+@media screen and (max-width: 480px) {
+    *{
+        font-family: "Open Sans", "sans-serif";
+    }
+
+    .container{
+        width: auto;
+        padding: 20px;
+    }
+
+    h2{
+        font-size: 18px;
+        font-weight: normal;
+    }
+    label{
+        font-size: 12px;
+    }
+
+    input{
+        font-size: 12px;
+    }
+
+    .submit-btn>input{
+        height: 30px;
+        width: 90px;
+        font-size: 12px;
+        font-weight: normal;
+        padding: 0px;
+    }
+}
