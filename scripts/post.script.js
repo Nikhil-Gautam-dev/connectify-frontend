@@ -1,17 +1,11 @@
-import { getCookie } from "./utils.script.js";
-import { USER_URL,POST_URL } from "../config.js";
+import { getCookie, getDateSeparated, getQueryParams, isUserLoggedIn, toggleDisplay } from "./utils.script.js";
+import { USER_URL, POST_URL } from "../config.js";
 import { customHeader } from "./footerAndHeader.script.js";
 
-const postSection = document.getElementsByClassName("post-section")[0];
-const userInfoSection = document.getElementsByClassName("user-info-section")[0];
-const loaderDiv = document.getElementById("loader");
+
 const loginbtns = document.getElementsByClassName("login-btn");
-// const userAvatarElement = document.getElementById("avatar");
-const avatarElement = document.getElementById("writer-avatar");
-const notLoginSectionElement = document.getElementById("not-login-section");
 const followBtn = document.getElementById("follow-btn");
-const token = getCookie("accessToken");
-let isFollowed; 
+let isFollowed;
 
 Array.from(loginbtns).forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -19,12 +13,12 @@ Array.from(loginbtns).forEach((btn) => {
   });
 });
 
-const getPost = async (postId) => {
+const fetchPost = async (postId) => {
   const URL = POST_URL + postId
-
-  //  `https://connectify-backend-api.onrender.com/api/v1/posts/${postId}`;
-
+  const token = getCookie("accessToken");
   let post = "";
+
+
   await fetch(URL, {
     method: "GET",
     headers: {
@@ -33,7 +27,6 @@ const getPost = async (postId) => {
     },
   })
     .then((res) => {
-      console.log(res.status);
       if (res.status == 200) {
         return res.json();
       } else {
@@ -42,7 +35,6 @@ const getPost = async (postId) => {
     })
     .then((res) => {
       if (res) {
-        console.log(res);
         post = res.data;
         return;
       } else {
@@ -56,9 +48,10 @@ const getPost = async (postId) => {
   return post;
 };
 
-const getUserInfo = async (username, id = "") => {
+const fetchUserInfo = async (username, id = "") => {
   const URL = USER_URL + `query/find?username=${username}`
-  // `https://connectify-backend-api.onrender.com/api/v1/users/query/find?username=${username}`;
+  const token = getCookie("accessToken");
+
 
   let user = "";
 
@@ -91,180 +84,255 @@ const getUserInfo = async (username, id = "") => {
   return user;
 };
 
-const setPostAndUser = (post, user) => {
-  postSection.style.display = "flex";
-  userInfoSection.style.display = "flex";
-  loaderDiv.style.display = "none";
+
+const renderLoginElements = () => {
+  const loaderDiv = document.getElementById("loader");
+  const notLoginSectionElement = document.getElementById("not-login-section");
+  const userAvatarElement = document.getElementById("avatar");
+  const errElement = document.getElementById("err-info");
+
+
+  toggleDisplay(loaderDiv, false)
+  toggleDisplay(errElement, false)
+  toggleDisplay(userAvatarElement, false)
+  toggleDisplay(notLoginSectionElement, true)
+}
+
+const renderErrElements = () => {
+  const errElement = document.getElementById("err-info");
+  const loaderDiv = document.getElementById("loader");
+
+  toggleDisplay(loaderDiv, false)
+  toggleDisplay(errElement, true)
+
+}
+
+const renderLoadingScreen = () => {
+  const loaderDiv = document.getElementById("loader");
+  const notLoginSectionElement = document.getElementById("not-login-section");
+  const userAvatarElement = document.getElementById("avatar");
+  const loginbtns = document.getElementsByClassName("login-btn");
+
+
+  toggleDisplay(notLoginSectionElement, false)
+  toggleDisplay(loaderDiv, true)
+  toggleDisplay(userAvatarElement, true)
+
+  userAvatarElement.setAttribute(
+    "src",
+    getCookie("avatar") || "../assests/avatar.jpg"
+  );
+  Array.from(loginbtns).forEach((btn) => {
+    toggleDisplay(btn, false)
+  });
+}
+
+function validateHTMLTags(htmlString) {
+  // Regular expression to match HTML tags
+  const tagPattern = /<\/?([a-zA-Z0-9]+)[^>]*>/g;
+  const selfClosingTags = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+  const stack = [];
+  let match;
+
+  while ((match = tagPattern.exec(htmlString)) !== null) {
+      const tag = match[0];
+      const tagName = match[1];
+
+      if (tag.startsWith('</')) {
+          // Closing tag
+          if (stack.length === 0 || stack.pop() !== tagName) {
+              return false;
+          }
+      } else if (!selfClosingTags.includes(tagName)) {
+          // Opening tag (exclude self-closing tags)
+          stack.push(tagName);
+      }
+  }
+
+  return stack.length === 0;
+}
+
+const renderPost = async (post) => {
+
+  const postSection = document.getElementsByClassName("post-section")[0];
+  const userInfoSection = document.getElementsByClassName("user-info-section")[0];
+  const loaderDiv = document.getElementById("loader");
+
+  toggleDisplay(postSection,true)
+  toggleDisplay(userInfoSection,true)
+  toggleDisplay(loaderDiv,false)
 
   const titleElement = document.getElementById("title");
-  titleElement.innerText = post.title;
-
   const postImgElement = document.getElementById("postImg");
-  postImgElement.setAttribute("src", post.postImgUrl || "../assests/bg2.jpg");
-
   const contentElement = document.getElementById("content");
 
-  contentElement.innerHTML = post.content;
+  titleElement.innerText = post.title;
+  postImgElement.setAttribute("src", post.postImgUrl || "../assests/bg2.jpg");
 
- 
-  avatarElement.setAttribute("src", user.avatar || "../assests/avatar.jpg");
-  avatarElement.setAttribute("data-username",user.username);
+  let content = post.content
 
+  content = content.replaceAll("&lt;","<")
+  content = content.replaceAll("&gt;",">")
+  content = content.replaceAll("<br>","")
+
+  contentElement.innerHTML = "";
+  contentElement.innerHTML = content;
+  
+
+}
+
+const renderUserInfo = async (user,dateString) => {
+
+
+  const {month,date,year} = getDateSeparated(dateString)
+  const authorAvatarTag = document.getElementById("writer-avatar");
   const usernameElement = document.getElementById("username");
+  const followBtn = document.getElementById("follow-btn");
+  const monthTag = document.getElementById("month")
+  const dateTag = document.getElementById("date")
+  const yearTag = document.getElementById("year") 
+
+
 
   usernameElement.innerText = user.username;
 
-  const followerCountElement = document.getElementById("follower-count");
+  followBtn.setAttribute("data-username",user.username)
 
-  followerCountElement.innerText = user.followers.length;
-};
+  authorAvatarTag.setAttribute("src", user.avatar || "../assests/avatar.jpg");
+  authorAvatarTag.setAttribute("data-username", user.username);
 
-const updateFollower = async (username) => {
-  const users = await getUserInfo(username)
-
-  const user = users[0]
-  if(user){
-    const followerCountElement = document.getElementById("follower-count");
-
-    followerCountElement.innerText = user.followers.length;
+  authorAvatarTag.onclick = () => {
+    document.location.href = `../pages/profile.html?username=${authorAvatarTag.dataset.username}`
   }
 
-}
+  monthTag.innerText = month
+  dateTag.innerText = date+","
+  yearTag.innerText = year
+ }
 
+ 
+
+ const renderFollowBtn = async (user)=>{
+  const followBtn = document.getElementById("follow-btn");
+  let isFollowed = user.followers.includes(getCookie("id"))
+
+  followBtn.setAttribute("data-username", user.username)
+  if (getCookie("username") == followBtn.dataset.username) {
+    const followBtnContainer = document.getElementById("follow-btn-container")
+    toggleDisplay(followBtnContainer,false)
+    return null
+  }
+  followBtn.innerText = isFollowed ? "unfollow" : "follow";
+  toggleDisplay(followBtn,true)
+  return isFollowed
+ }
 
 window.onload = async () => {
-  console.log(document.cookie);
 
   customHeader()
-  const userAvatarElement = document.getElementById("avatar");
+
+
   const errElement = document.getElementById("err-info");
-  
-
-  errElement.style.display = "none";
-
-  if (!token) {
-    console.log("token");
-    
-    loaderDiv.style.display = "none";
-    userAvatarElement.style.display = "none";
-    notLoginSectionElement.style.display = "flex";
-  } else {
-    const postId = window.location.href.split("=")[1];
-    notLoginSectionElement.style.display = "none";
-    loaderDiv.style.display = "flex";
-    userAvatarElement.style.display = "flex";
-    userAvatarElement.setAttribute(
-      "src",
-      getCookie("avatar") || "../assests/avatar.jpg"
-    );
-    Array.from(loginbtns).forEach((btn) => {
-      btn.style.display = "none";
-    });
 
 
-    userAvatarElement.addEventListener("click",()=>{
-  
-  document.location.href = `../pages/profile.html`
-})
+  toggleDisplay(errElement,false)
 
-    console.log(getCookie("username"))
-    console.log(followBtn.dataset.username)
-    
 
-    if (postId) {
-      const post = await getPost(postId);
-      console.log(post.createdby);
-      const users = await getUserInfo(post.createdby);
+  if (!isUserLoggedIn()) {
+    renderLoginElements();
 
-      setPostAndUser(post, users[0]);
+  }
 
-      isFollowed = users[0].followers.includes(getCookie("id"))
+  else {
+    const { postId } = getQueryParams(document.location.href);
 
-      followBtn.setAttribute("data-username",users[0].username)
-      if(getCookie("username") == followBtn.dataset.username){ 
-        followBtn.style.display = "none"
-      }
-      followBtn.innerText = isFollowed?"unfollow":"follow";
-      followBtn.style.backgroundColor = isFollowed?"#dd0606":"#06dd6d";
-      followBtn.style.border = "2px solid " + isFollowed?"#dd0606":"#06dd6d";
-      console.log(users[0]);
-    } 
-    
+    if (!postId) {
+      renderErrElements()
+    }
+
     else {
-      loaderDiv.style.display = "none";
-      errElement.style.display = "flex";
-      console.log("no post id");
+      renderLoadingScreen()
+
+      const post = await fetchPost(postId);
+      if(!post){
+        renderErrElements()
+      }
+
+      else{
+        renderPost(post)
+        const users = await fetchUserInfo(post.createdby);
+        renderUserInfo(users[0],post.createdAt)
+        isFollowed = await renderFollowBtn(users[0])
+      }
+
     }
   }
 };
 
-const followUser = async (username,method)=>{
-    const URL = USER_URL + `username/${username}/follow`;
+const followUser = async (username, method) => {
+  const URL = USER_URL + `username/${username}/follow`;
 
-    //  `https://connectify-backend-api.onrender.com/api/v1/users/username/${username}/follow`;
+  const token = getCookie("accessToken");
 
-    console.log(URL)
 
-    let check=false 
+  let check = false
 
-    await fetch(URL, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
+  await fetch(URL, {
+    method: method,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (res.status == 200) {
+        return res.json();
+      } else {
+        return null;
+      }
     })
-      .then((res) => {
-        console.log(res.status);
-        if (res.status == 200) {
-          return res.json();
-        } else {
-          return null;
-        }
-      })
-      .then((res) => {
-        if (res) {
-          check=true
-          return;
-        } else {
-          return null;
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    .then((res) => {
+      if (res) {
+        check = true
+        return;
+      } else {
+        return null;
+      }
+    })
+    .catch((err) => {
+    });
 
-      return check
+  return check
 }
 
-followBtn.addEventListener("click", async (e) => {
- 
+const handleFollowBtn = async (followBtn,isFollowed)=>{
   const loader = document.getElementById("follow-loader")
   loader.style.display = "flex"
   followBtn.style.display = "none"
-    console.log(isFollowed)
-    const following = await followUser(followBtn.dataset.username, isFollowed?"DELETE":"POST")
+  const following = await followUser(followBtn.dataset.username, isFollowed ? "DELETE" : "POST")
 
-    if(following){
-      await updateFollower(followBtn.dataset.username)
-      followBtn.style.display = "flex"
-      loader.style.display = "none"
-    followBtn.innerText = isFollowed?"follow":"unfollow";
-    followBtn.style.backgroundColor = isFollowed?"#06dd6d":"#dd0606";
-    followBtn.style.border = "2px solid " + isFollowed?"#06dd6d":"#dd0606";
-    isFollowed=!isFollowed
-    console.log(isFollowed)}
-    else{
-      followBtn.style.display = "flex"
-      loader.style.display = "none"
-      alert("something went wrong while following try again")
-    }
+  if (following) {
+    followBtn.style.display = "flex"
+    loader.style.display = "none"
+    followBtn.innerText = isFollowed ? "follow" : "unfollow";
+    isFollowed = !isFollowed
+  }
+  else {
+    followBtn.style.display = "flex"
+    loader.style.display = "none"
+    alert("something went wrong while following try again")
+  }
+
+  return {isFollowed,following}
+ }
+
+followBtn.addEventListener("click", async (e)=>{
+  isFollowed = await handleFollowBtn(e.target,isFollowed)
 });
 
 
-
-avatarElement.addEventListener("click",()=>{
-  
-  document.location.href = `../pages/profile.html?username=${avatarElement.dataset.username}`
-})
-
+export {
+  renderFollowBtn,
+  followUser,
+  handleFollowBtn
+}

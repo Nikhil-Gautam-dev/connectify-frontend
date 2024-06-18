@@ -14,140 +14,54 @@
 
 <body>
     <div class="main" id="main">
-        <!-- <header>
-            <nav>
-                <div class="logo-container">
-                    <div class="logo">Connectify</div>
-                </div>
-                <div class="nav-items">
-                    <span class="h-icon">
-                        <img src="../assests/h-icon.webp" alt="" />
-                    </span>
-                    <ul class="nav-item-list">
-                        <li id="home"><a href="../pages/home.html">home</a></li>
-                        <li id="write"><a href="../pages/write.html">write</a></li>
-                        <li id="posts"><a href="../pages/home.html#posts">posts</a></li>
-                        <li id="about"><a href="#">about</a></li>
-                        <span id="avatar-li"><img src="" alt="avatar" id="avatar" /></span>
-                        <li class="login-btn" id="login-btn"><a href="#">login</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </header> -->
     </div>
 
 <section class="dynamic-data">
     
     <section class="post-section">
-        <div class="post-container">
-            <div class="title-container">
-                <h1 id="title">How to be good at coding ?</h1>
+        <div class="title-container">
+            <h1 id="title">How to be good at coding ?</h1>
+        </div>
+
+        <section class="user-info-section">
+            <div class="user-info">
+                <div class="user-img-title-container">
+                    <span><img src="../assests/avatar.jpg" alt="avatar" id="writer-avatar"/></span>
+                    <div class="username-follower-container">
+                        <div class="username-follow-btn-container">
+                            <div class="username" id="username"></div>
+                            <span>|</span>
+                            <div class="follow-btn-container" id="follow-btn-container">
+                                <span id="follow-btn"></span>
+                                <div class="follow-loader-container" id="follow-loader">
+                                    <span class="loader"></span>
+                                  </div>
+                            </div>
+                        </div>
+                        <span class="published-date">
+                            <span class="month" id="month">may</span>
+                            <span class="date" id="date">3,</span>
+                            <span class="year" id="year">2003</span>
+                          </span>
+                    </div>
+                </div>
+    
+                
             </div>
+        </section>
+
         <div class="img-container">
             <img src="../assests/bg2.jpg" alt="" id="postImg">
         </div>
        
-        </div>
        <div class="u-content-container">
-        <div class="content-container" id="content">
-            <p>
-                <p><strong>Coding</strong> is an essential skill in today's technology-driven world. Whether you're a beginner or looking to improve your skills, there are several strategies you can adopt to become a proficient coder.</p>
-    
-            <h2>1. Understand the Basics</h2>
-            <p>Before diving into complex algorithms and advanced concepts, make sure you have a solid understanding of the basics. This includes:</p>
-            <ul>
-                <li>Basic syntax of the programming language you're learning</li>
-                <li>Data types and structures</li>
-                <li>Control structures (loops, conditionals, etc.)</li>
-                <li>Basic algorithms (sorting, searching, etc.)</li>
-            </ul>
-            <p>A strong foundation will make it easier to grasp more advanced topics later on.</p>
-        
-            <h2>2. Practice Regularly</h2>
-            <p>Coding is a skill that improves with practice. Make it a habit to code every day, even if it's just for a short period. Regular practice helps you:</p>
-            <ul>
-                <li>Retain what you've learned</li>
-                <li>Develop problem-solving skills</li>
-                <li>Build confidence in your abilities</li>
-            </ul>
-            <p>Consider working on small projects or solving coding challenges to keep your skills sharp.</p>
-        
-            <h2>3. Learn from Others</h2>
-            <p>Don't be afraid to seek help and learn from others. Join coding communities, participate in forums, and follow experienced developers. You can:</p>
-            <ul>
-                <li>Ask questions and get answers from more experienced coders</li>
-                <li>Collaborate on projects to gain practical experience</li>
-                <li>Get feedback on your code to identify areas for improvement</li>
-            </ul>
-        
-            <h2>4. Study Algorithms and Data Structures</h2>
-            <p>Understanding algorithms and data structures is crucial for solving complex problems efficiently. Study topics such as:</p>
-            <ul>
-                <li>Sorting and searching algorithms</li>
-                <li>Linked lists, stacks, queues, and trees</li>
-                <li>Graph algorithms</li>
-                <li>Dynamic programming</li>
-            </ul>
-            <p>Implement these concepts in your code to deepen your understanding.</p>
-        
-            <h2>5. Build Real Projects</h2>
-            <p>Applying your skills to real-world projects is one of the best ways to improve. Building projects helps you:</p>
-            <ul>
-                <li>Understand how different components of a program work together</li>
-                <li>Develop practical problem-solving skills</li>
-                <li>Create a portfolio that showcases your abilities</li>
-            </ul>
-            <p>Start with small projects and gradually take on more complex ones as your skills improve.</p>
-        
-            <h2>6. Keep Learning and Stay Updated</h2>
-            <p>The field of technology is constantly evolving, so it's important to stay updated with the latest trends and advancements. You can:</p>
-            <ul>
-                <li>Read blogs, articles, and books about coding and technology</li>
-                <li>Take online courses to learn new programming languages and tools</li>
-                <li>Attend workshops, webinars, and conferences</li>
-            </ul>
-            <p>Continual learning will help you stay competitive and improve your coding skills over time.</p>
-        
-            <h2>7. Debug and Refactor Your Code</h2>
-            <p>Writing code is just one part of the process; debugging and refactoring are equally important. When you encounter bugs, take the time to:</p>
-            <ul>
-                <li>Understand the problem and identify its root cause</li>
-                <li>Fix the bug and test your solution thoroughly</li>
-                <li>Refactor your code to improve its structure and readability</li>
-            </ul>
-            <p>This practice will make your code more efficient and maintainable.</p>
-        
-            <h2>8. Be Patient and Persistent</h2>
-            <p>Becoming good at coding takes time and effort. There will be challenges and setbacks along the way, but don't get discouraged. Stay patient and persistent, and remember that every mistake is an opportunity to learn and grow.</p>
-        
-            <h2>Conclusion</h2>
-            <p>Becoming proficient at coding is a journey that requires dedication and continuous learning. By understanding the basics, practicing regularly, learning from others, studying algorithms and data structures, building real projects, staying updated, debugging and refactoring your code, and maintaining patience and persistence, you can become a skilled coder. Start today, and enjoy the process of learning and creating with code!</p>
-        </p>
+        <div class="content-container">
+            <p id="content">
+
+            </p>
            </div>
        </div>
 
-    </section>
-
-    <section class="user-info-section">
-        <div class="user-info">
-            <div class="user-img-title-container">
-                <span><img src="../assests/avatar.jpg" alt="avatar" id="writer-avatar"/></span>
-                <div class="username-follower-container">
-                    <div class="username" id="username">loading..</div>
-                    <div class="followers-container">
-                        <span class="follower-text">followers</span>
-                        <span class="follower-count" id="follower-count">loading</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="btn-container">
-                <button id="follow-btn">loading..</button>
-                <div class="loader-container" id="follow-loader">
-                    <span class="loader"></span>
-                  </div>
-            </div>
-        </div>
     </section>
 
     <section class="not-login-section" id="not-login-section">

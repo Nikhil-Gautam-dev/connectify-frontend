@@ -8,96 +8,56 @@
       src="https://cdn.tiny.cloud/1/vulkcl5vs0cp242f8aywwtj454b7wmjm3awzahoq3fsp1u7b/tinymce/7/tinymce.min.js"
       referrerpolicy="origin"
     ></script>
-   
+
     <script type="module" src="../scripts/write.script.js"></script>
     <link rel="stylesheet" href="../style/write.style.css" />
-    <link rel="stylesheet" href="../style/footerAndHeader.style.css">
-    <link rel="stylesheet" href="../style/write.mobile.style.css">
+    <link rel="stylesheet" href="../style/footerAndHeader.style.css" />
+    <link rel="stylesheet" href="../style/write.mobile.style.css" />
   </head>
   <body>
-    <div class="main" id="main">
-      <!-- <header>
-        <nav>
-          <div class="logo-container">
-            <div class="logo">Connectify</div>
-          </div>
-          <div class="nav-items">
-            <span class="h-icon">
-              <img src="../assests/h-icon.webp" alt="" />
-            </span>
-            <ul class="nav-item-list">
-              <li id="home"><a href="../pages/home.html">home</a></li>
-              <li id="write"><a href="#">write</a></li>
-              <li id="posts"><a href="#posts">posts</a></li>
-              <li id="about"><a href="#">about</a></li>
-              <span id="avatar-li"
-                ><img src="" alt="avatar" id="avatar"
-              /></span>
-              <li class="login-btn" id="login-btn"><a href="#">login</a></li>
-            </ul>
-          </div>
-        </nav>
-      </header> -->
-
-    
-    <section class="hero">
-        <div class="hero-content">
-          <div class="title">Welcome to writting</div>
-          <div class="sub-title">Write with your heart</div>
-          <p class="desc">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni,
-            veniam. Rerum facilis quos ducimus quidem ipsam, ipsa ullam?
-            Reiciendis libero fugiat iusto numquam, deleniti architecto nobis
-            quae enim molestias provident!
-          </p>
-        </div>
-      </section>
-
-      </div>
-
+    <div class="main" id="main"></div>
 
     <section class="write-section" id="write-section">
-        <div class="write-heading" id="write-heading">
-            #Create New Post
+      <form action="#" id="form">
+        <div class="title-container">
+          <input
+            type="text"
+            id="title"
+            placeholder="Write title here"
+            required
+          />
         </div>
+        <div class="tags-container">
+          <input
+            type="text"
+            id="tags"
+            placeholder="add tags with comma separation"
+            required
+          />
+        </div>
+        <div class="upload-img-container">
+          <label for="postImg">Upload Cover Image</label>
+          <input type="file" name="postImg" id="postImg" />
+        </div>
+        <div class="content-container">
+          <textarea id="content-area">write your content here</textarea>
+          <div class="loader-container" id="textarea-loader">
+            <span class="loader"></span>
+          </div>
+        </div>
+        <div class="btn-loader-container">
+          <input type="submit" value="create" id="create-btn" />
+          <div class="loader-container" id="loader">
+            <span class="loader"></span>
+          </div>
+        </div>
+      </form>
+    </section>
 
-        <form action="#" id="form">
-            <div class="title-container">
-                <label for="title">Title : </label>
-                <input type="text" id="title" placeholder="Write title here" required>
-            </div>
-            <div class="tags-container">
-                <label for="tags">Tags : </label>
-                <input type="text" id="tags" placeholder="add tags with comma separation" required>
-            </div>
-            <div class="upload-img-container">
-                <label for="postImg">Upload Image</label>
-                <input type="file" name="postImg" id="postImg">
-            </div>
-            <div class="content-container">
-                <textarea id="content-area" >write your content here</textarea>
-                <div class="loader-container" id="textarea-loader">
-                  <span class="loader"></span>
-                </div>
-
-            </div>
-            <div class="btn-loader-container">
-                <input type="submit" value="submit" id="create-btn">
-            <div class="loader-container" id="loader">
-                <span class="loader"></span>
-              </div>
-            </div>
-        </form>
-      </section>
-
-        <section class="not-login-section" id="not-login-section">
-          <h1>404</h1>
-          <p>OOPS! You are not logged in !</p>
-          <button class="login-btn">click to login</button>
-      </section>
-        
-
-
-    
+    <section class="not-login-section" id="not-login-section">
+      <h1>404</h1>
+      <p>OOPS! You are not logged in !</p>
+      <button class="login-btn">click to login</button>
+    </section>
   </body>
 </html>

@@ -1,23 +1,19 @@
 import { POST_URL } from "../config.js";
-import { getCookie, getQueryParams } from "./utils.script.js";
+import { getCookie, getQueryParams, isUserLoggedIn, toggleDisplay } from "./utils.script.js";
 import { customHeader } from "./footerAndHeader.script.js";
 
 const form = document.getElementById("form");
-const loaderDiv = document.getElementById("loader");
-const textAreaLoaderDiv = document.getElementById("textarea-loader");
-const notLoginSection = document.getElementById("not-login-section");
-const writeSection = document.getElementById("write-section");
-const userAvatar = document.getElementById("avatar");
 const loginbtns = document.getElementsByClassName("login-btn");
-const contentArea = document.getElementById("content-area")
-const token = getCookie("accessToken");
 
 const currUrl = document.location.href;
 
-const createOrUpdatePost = async (postId,method) => {
+const createOrUpdatePost = async (postId, method) => {
   const content = tinymce.activeEditor.getContent();
   const title = document.getElementById("title").value;
   const tags = document.getElementById("tags").value.split(",");
+
+  const token = getCookie("accessToken");
+
 
   const data = {
     title,
@@ -26,22 +22,19 @@ const createOrUpdatePost = async (postId,method) => {
   };
 
   const URL = POST_URL + postId;
-  // "https://connectify-backend-api.onrender.com/api/v1/posts/" + postId;
 
-  console.log(POST_URL)
   let createdPost = "";
 
   await fetch(URL, {
     method: method,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   })
     .then((res) => res.json())
     .then((res) => {
-      console.log(res.data._id);
       createdPost = res.data;
     })
     .catch((err) => {
@@ -51,12 +44,15 @@ const createOrUpdatePost = async (postId,method) => {
   return createdPost;
 };
 
-const uploadImage = async (postId,file) => {
+const uploadImage = async (postId, file) => {
+
+  const token = getCookie("accessToken");
+
+
   const newFormData = new FormData();
   newFormData.append("postImg", file);
 
-  const URL = POST_URL + postId 
-  // `https://connectify-backend-api.onrender.com/api/v1/posts/${postId}`;
+  const URL = POST_URL + postId
 
   let check = false;
 
@@ -69,7 +65,6 @@ const uploadImage = async (postId,file) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      console.log("post created");
       check = true;
       return;
     })
@@ -82,18 +77,18 @@ const uploadImage = async (postId,file) => {
 
 const getPost = async (postId) => {
   const URL = POST_URL + postId
-  `https://connectify-backend-api.onrender.com/api/v1/posts/${postId}`;
+  const token = getCookie("accessToken");
+
 
   let post = "";
   await fetch(URL, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
   })
     .then((res) => {
-      console.log(res.status);
       if (res.status == 200) {
         return res.json();
       } else {
@@ -102,7 +97,6 @@ const getPost = async (postId) => {
     })
     .then((res) => {
       if (res) {
-        console.log(res);
         post = res.data;
         return;
       } else {
@@ -116,31 +110,10 @@ const getPost = async (postId) => {
   return post;
 };
 
-const updateSection = async (post) => {
-  const writeHeadingElement = document.getElementById("write-heading")
-  const title = document.getElementById("title")
-  const tags = document.getElementById("tags")
-  
-  const createBtn = document.getElementById("create-btn")
-
-  writeHeadingElement.innerText = "#Edit Your Post"
-  createBtn.value = "update"
-
-  title.value = post.title
-
-  let temp = ""
-  for (let i = 0; i < post.tags.length; i++) {
-    temp += post.tags[i]+","
-  }
-
-  tags.value = temp
-  contentArea.innerText = post.content
-}
-
-const RTEPlugin = () => {
+const tinyMcePlugin = () => {
   tinymce.init({
     selector: 'textarea',
-    menubar:"",
+    menubar: "",
     plugins: '',
     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
     tinycomments_mode: 'embedded',
@@ -152,113 +125,136 @@ const RTEPlugin = () => {
   });
 }
 
+const renderLoginPage = (loginFlag) => {
+  const notLoginSection = document.getElementById("not-login-section");
+  const loaderDiv = document.getElementById("loader");
+  const writeSection = document.getElementById("write-section");
+  const userAvatar = document.getElementById("avatar");
+  const loginbtns = document.getElementsByClassName("login-btn");
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+  toggleDisplay(notLoginSection, loginFlag)
+  toggleDisplay(loginbtns[0], loginFlag)
+  toggleDisplay(loginbtns[1], loginFlag)
+  toggleDisplay(userAvatar, !loginFlag)
+  toggleDisplay(writeSection, !loginFlag)
+  toggleDisplay(loaderDiv, false)
+}
 
-  console.log("inside");
+const renderTextEditor = () => {
+  const contentArea = document.getElementById("content-area")
+  const textAreaLoaderDiv = document.getElementById("textarea-loader");
+
+  toggleDisplay(contentArea,false)
+  toggleDisplay(textAreaLoaderDiv,true)
+  tinyMcePlugin()
+  toggleDisplay(contentArea,true)
+  toggleDisplay(textAreaLoaderDiv,false)
+  
+}
+
+const renderPostUpdate = (post) => {
+  const title = document.getElementById("title")
+  const tags = document.getElementById("tags")
+  const contentArea = document.getElementById("content-area")
   const createBtn = document.getElementById("create-btn")
 
-  loaderDiv.style.display = "flex";
+  createBtn.value = "update"
+  title.value = post.title
 
-  let post;
-
-  console.log(createBtn)
-
-  let toUpdate = (createBtn.value == "update")
-
-  if (toUpdate) {
-    console.log("update")
-    post = await createOrUpdatePost(getQueryParams(currUrl).postId,"PUT")
+  let temp = ""
+  for (let i = 0; i < post.tags.length; i++) {
+    temp += post.tags[i] + ","
   }
 
-  else {
-    console.log("new")
-    post = await createOrUpdatePost("","POST")
-  }
-  console.log(post)
+  tags.value = temp
+  contentArea.innerText = post.content
+}
 
-  if(post){
-    const file = document.getElementById("postImg")?.files[0];
-    if(file){
-      const fileUploaded = await uploadImage(post._id,file)
-      if(!fileUploaded){
-        alert("something went wrong while uploading the file")
-      }
+const handleForm = async (event)=>{
+  {
+    event.preventDefault();
+    const createBtn = document.getElementById("create-btn")
+    const loaderDiv = document.getElementById("loader");
+  
+    let post;
+    let toUpdate = (createBtn.value == "update")
+  
+    toggleDisplay(loaderDiv,true)
+  
+    if (toUpdate) {
+      post = await createOrUpdatePost(getQueryParams(currUrl).postId, "PUT")
     }
+  
+    else {
+      post = await createOrUpdatePost("", "POST")
+    }
+  
+    if (post) {
+      const file = document.getElementById("postImg")?.files[0];
+      if (file) {
+        const fileUploaded = await uploadImage(post._id, file)
+        if (!fileUploaded) {
+          alert("something went wrong while uploading the file")
+        }
+      }
+  
+      window.location.href = `../pages/posts.html?id=${post._id}`
+  
+    }
+  
+    else {
+      alert("something went wrong while" + (toUpdate ? " updating" : " creating") + " the post please retry")
+    }
+  
+  }
+}
 
-    window.location.href = `../pages/posts.html?id=${post._id}`
+function validateHTMLTags(htmlString) {
+  // Regular expression to match HTML tags
+  const tagPattern = /<\/?([a-zA-Z0-9]+)[^>]*>/g;
+  const selfClosingTags = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+  const stack = [];
+  let match;
 
+  while ((match = tagPattern.exec(htmlString)) !== null) {
+      const tag = match[0];
+      const tagName = match[1];
+
+      if (tag.startsWith('</')) {
+          // Closing tag
+          if (stack.length === 0 || stack.pop() !== tagName) {
+              return false;
+          }
+      } else if (!selfClosingTags.includes(tagName)) {
+          // Opening tag (exclude self-closing tags)
+          stack.push(tagName);
+      }
   }
 
-  else{
-    alert("something went wrong while"+(toUpdate?" updating":" creating")+" the post please retry")
-  }
+  return stack.length === 0;
+}
 
-  // if (post) {
-  //   console.log(post._id);
-  //   const check = await uploadImage(newPost._id);
 
-  //   if (check) {
-  //     console.log(document.location.href);
-
-  //     window.location.href = `../pages/posts.html?id=${newPost._id}`;
-  //   } else {
-  //     console.log("no check");
-  //   }
-  // } else {
-  //   console.log("no post id");
-  // }
-});
+form.addEventListener("submit", handleForm);
 
 window.onload = async () => {
   customHeader()
-  const userAvatar = document.getElementById("avatar");
-  const loginbtns = document.getElementsByClassName("login-btn");
-  if (!token) {
-    notLoginSection.style.display = "flex";
-    loaderDiv.style.display = "none";
-    userAvatar.style.display = "none";
-    writeSection.style.display = "none";
-    loginbtns[0].style.display = "flex";
-    loginbtns[1].style.display = "flex";
+  if (!isUserLoggedIn()) {
+    renderLoginPage(true)
   } else {
-    contentArea.style.display = "none"
-    textAreaLoaderDiv.style.display = "flex"
-    if (currUrl.includes("edit")) {
-
-      console.log(currUrl)
-
-      const postId = getQueryParams(currUrl).postId
+    renderLoginPage(false)
+    const { edit, postId } = getQueryParams(document.location.href)
+    renderTextEditor()
+    if (edit === "true" && postId) {
       const post = await getPost(postId)
-
-      await updateSection(post)
-
+      renderPostUpdate(post)
     }
-      notLoginSection.style.display = "none";
-      loginbtns[0].style.display = "none";
-      loginbtns[1].style.display = "none";
-      userAvatar.style.display = "flex";
-      writeSection.style.display = "flex";
-      userAvatar.setAttribute(
-        "src",
-        getCookie("avatar") || "../assests/avatar.jpg"
-      );
-    RTEPlugin()
-    contentArea.style.display = "flex"
-    textAreaLoaderDiv.style.display = "none"
-    Array.from(loginbtns).forEach((btn) => {
-      btn.addEventListener("click", () => {
-        document.location.href = "../pages/login.html";
-      });
-    });
-    
-    
-    userAvatar.addEventListener("click",()=>{
-      
-      document.location.href = `../pages/profile.html`
-    })
-
   }
 };
 
+
+Array.from(loginbtns).forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.location.href = "../pages/login.html";
+  });
+});

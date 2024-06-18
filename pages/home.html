@@ -3,48 +3,78 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../style/home.main.style.css" />
-    <link rel="stylesheet" href="../style/home.mobile.style.css">
-    <link rel="stylesheet" href="../style/footerAndHeader.style.css">
+    <link rel="stylesheet" href="../style/footerAndHeader.style.css" />
+    <link rel="stylesheet" href="../style/home.mobile.style.css" />
     <script type="module" src="../scripts/home.script.js"></script>
     <title>home</title>
   </head>
   <body>
     <div class="main" id="main">
-    <section class="hero">
+      <section class="hero">
         <div class="hero-content">
           <div class="title">Welcome to Connectify</div>
           <div class="sub-title">let's connect</div>
           <p class="desc">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni,
-            veniam. Rerum facilis quos ducimus quidem ipsam, ipsa ullam?
-            Reiciendis libero fugiat iusto numquam, deleniti architecto nobis
-            quae enim molestias provident!
+            Start your journey with Connectify today. Write, connect, and discover the endless possibilities that come from sharing your unique perspective with the world.
           </p>
         </div>
       </section>
-
-     
     </div>
 
     <section class="posts-section" id="posts">
-        <div class="post-container">
-            <span class="post-heading">
-                Posts
-            </span>
-            <ul id="post-list-container">
-            </ul>
-            <div class="loader-container" id="loader">
-              <span class="loader"></span>
-            </div>
+      <div class="post-container">
+        <div class="heading-search-container">
+          <span class="post-heading"> Posts </span>
+          <div class="search-bar-container">
+            <form action="#" id="search-bar-form">
+              <input type="text" id="search-bar">
+            </form>
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></span>
+          </div>
         </div>
-      </section>
+        <ul id="post-list-container">
+          <li class="post-card">
+            <div class="post-left">
+              <div class="author-date-container">
+                <span class="author">Nikhil</span>
+                <span class="published-date">
+                  <span class="month">jun</span>
+                  <span class="date">6,</span>
+                  <span class="year">2024</span>
+                </span>
+              </div>
+              <div class="post-title">How to become hokage in one day without any hardork or reincarnation jutsu or any pure clan blood</div>
+              <div class="keywords">#hokage #Naruto #clan #jutsu #shortcut</div>
+            </div>
+            <div class="post-right">
+              <img src="../assests/bg2.jpg" alt="img" />
+            </div>
+          </li>
+        </ul>
+        <div class="loader-container" id="loader">
+          <span class="loader"></span>
+        </div>
+        <div class="no-res-found-container" id="no-res-found-container">
+          <img src="../assests/no-result-found.png" alt="">
+          <div>Sorry,No result found!</div>
+        </div>
+      </div>
+      
+      <div class="load-more-btn-container">
+        <button id="load-more">load more</button>
+        <div class="load-more-loader-container" id="load-more-loader">
+          <span class="loader"></span>
+        </div>
+      </div>
+    </section>
 
-      <section class="not-login-section" id="not-login-section">
-          <h1>404</h1>
-          <p>OOPS! You are not logged in !</p>
-          <button class="login-btn">click to login</button>
-      </section>
+    <section class="not-login-section" id="not-login-section">
+      <h1>404</h1>
+      <p>OOPS! You are not logged in !</p>
+      <button class="login-btn">click to login</button>
+    </section>
     
   </body>
 </html>

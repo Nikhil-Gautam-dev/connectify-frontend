@@ -1,19 +1,47 @@
 import {
-  currentPageOutline,
+  clearCookie,
   getCookie,
   isUserLoggedIn,
+  setCookieWithExpirationInSeconds,
+  getKeywordsAsString,
+  getDateSeparated,
+  toggleDisplay,
+  getQueryParams,
 } from "./utils.script.js";
 
 import { customHeader } from "./footerAndHeader.script.js";
 
-import { POST_URL, USER_URL } from "../config.js";
+import { POST_URL } from "../config.js";
 
+const searchBarFormTag = document.getElementById("search-bar-form");
+const searchBarTag = document.getElementById("search-bar");
+const searchIconTag = document.getElementById("search-icon");
+const loginbtns = document.getElementsByClassName("login-btn");
 const token = getCookie("accessToken");
+const postListContainerElement = document.getElementById("post-list-container");
 
-const getAllPost = async () => {
-  const URL = POST_URL + "query/search/?page=1&limit=8";
+Array.from(loginbtns).forEach((btn) => {
+  btn.addEventListener("click", () => {
+    window.location.href = "./login.html";
+  });
+});
+
+const fetchPosts = async (page, limit, title, tags, author) => {
+  let queries = "";
+  if (title) {
+    queries += "&title=" + title;
+  }
+  if (tags) {
+    queries += "&tags=" + tags;
+  }
+  if (author) {
+    queries += "&author=" + author;
+  }
+  const URL =
+    POST_URL + `query/search/?page=${page || 1}&limit=${limit || 8}${queries}`;
 
   let posts;
+  let totalPages;
   await fetch(URL, {
     method: "GET",
     headers: {
@@ -23,56 +51,25 @@ const getAllPost = async () => {
   })
     .then((res) => res.json())
     .then((res) => {
+      totalPages = res.totalPages;
       return res.posts;
     })
     .then((res) => {
       posts = res;
     })
-    .catch((err) => { });
+    .catch((err) => {
+      console.log(err);
+    });
 
-  return posts;
+  return { posts, totalPages };
 };
 
-const getAndSetUserInfo = async () => {
-  const URL = USER_URL;
-
-  let userInfo;
-  await fetch(URL, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      return res.data;
-    })
-    .then((res) => {
-      userInfo = res;
-    })
-    .catch((err) => { });
-
-  const avatarContainer = document.getElementById("avatar");
-
-  avatarContainer.setAttribute(
-    "src",
-    userInfo.avatar || "../assests/avatar.jpg"
-  );
-  avatarContainer.setAttribute("alt", userInfo.user);
-};
-
-const setLoginErrorPage = () => {
+const renderLoginErrInfo = () => {
   const avatarContainer = document.getElementById("avatar-li");
   const loginbtns = document.getElementsByClassName("login-btn");
   const postSection = document.getElementById("posts");
   const notLoginSection = document.getElementById("not-login-section");
 
-  Array.from(loginbtns).forEach((btn) => {
-    btn.addEventListener("click", () => {
-      window.location.href = "./login.html";
-    });
-  });
   avatarContainer.style.display = "none";
   loginbtns[0].classList.add("display-flex");
   loginbtns[1].classList.add("display-flex");
@@ -80,110 +77,379 @@ const setLoginErrorPage = () => {
   notLoginSection.classList.add("display-flex");
 };
 
-const setPostPage = () => {
+const renderPostSection = () => {
   const avatarContainer = document.getElementById("avatar-li");
   const loginbtns = document.getElementsByClassName("login-btn");
   const postSection = document.getElementById("posts");
   const notLoginSection = document.getElementById("not-login-section");
 
-  Array.from(loginbtns).forEach((btn) => {
-    btn.addEventListener("click", () => {
-      window.location.href = "./login.html";
-    });
-  });
-
-  avatarContainer.classList.add("display-flex");
-  loginbtns[0].classList.add("display-none");
-  loginbtns[1].classList.add("display-none");
-  postSection.classList.add("display-flex");
-  notLoginSection.classList.add("display-none");
+  toggleDisplay(avatarContainer, true);
+  toggleDisplay(postSection, true);
+  toggleDisplay(loginbtns[0], false);
+  toggleDisplay(loginbtns[1], false);
+  toggleDisplay(notLoginSection, false);
 };
-const createPostElement = (postId, author, title, content, postImgUrl) => {
+
+const createDelEdit = (postId) => {
+  const delEditContainerTag = document.createElement("div");
+  delEditContainerTag.classList.add("edit-del-container");
+
+  const delBtn = document.createElement("span");
+  const editBtn = document.createElement("span");
+
+  delBtn.classList.add("fa-regular", "fa-trash-can", "del");
+  delBtn.setAttribute("data-postid", postId);
+  editBtn.classList.add("fa-solid", "fa-pen-to-square", "edit");
+  editBtn.setAttribute("data-postid", postId);
+
+  delEditContainerTag.appendChild(delBtn);
+  delEditContainerTag.appendChild(editBtn);
+
+  return delEditContainerTag;
+};
+const createPostElement = (
+  postId,
+  author,
+  title,
+  tags,
+  postImgUrl,
+  dateString,
+  isDelEdit
+) => {
+  const keywords = getKeywordsAsString(tags);
+  const { month, date, year } = getDateSeparated(dateString);
+
   const liElement = document.createElement("li");
-  const imgContainer = document.createElement("div");
+  const postLeft = document.createElement("div");
+  const postRight = document.createElement("div");
+  const authorDateContainer = document.createElement("div");
+  const postTitle = document.createElement("div");
+  const keywordsTag = document.createElement("div");
+
+  const authorTag = document.createElement("span");
+  const publishedDate = document.createElement("span");
+  const monthTag = document.createElement("span");
+  const dateTag = document.createElement("span");
+  const yearTag = document.createElement("span");
+
   const imgElement = document.createElement("img");
-  const authorSpan = document.createElement("span");
-  const h2Element = document.createElement("h2");
-  const paraElement = document.createElement("p");
 
-  if (content.includes("<")) {
-    content = content.replace(/<\/?[^>]+(>|$)/g, "");
+  postLeft.classList.add("post-left", "p-card");
+  liElement.classList.add("post-card", "p-card");
+  postRight.classList.add("post-right", "p-card");
+
+  authorDateContainer.classList.add("author-date-container", "p-card");
+  postTitle.classList.add("post-title", "p-card");
+  keywordsTag.classList.add("keywords", "p-card");
+
+  authorTag.classList.add("author", "p-card");
+  publishedDate.classList.add("published-date", "p-card");
+  monthTag.classList.add("month", "p-card");
+  dateTag.classList.add("date", "p-card");
+  yearTag.classList.add("year", "p-card");
+  imgElement.classList.add("year", "p-card");
+
+  authorTag.innerText = author;
+  monthTag.innerText = month;
+  dateTag.innerText = date + ",";
+  yearTag.innerText = year;
+  keywordsTag.innerText = keywords;
+  postTitle.innerText = title;
+  imgElement.setAttribute("src", postImgUrl || "../assests/no-img.png");
+  imgElement.setAttribute("alt", "post image");
+
+  publishedDate.appendChild(monthTag);
+  publishedDate.appendChild(dateTag);
+  publishedDate.appendChild(yearTag);
+
+  authorDateContainer.appendChild(authorTag);
+  authorDateContainer.appendChild(publishedDate);
+
+  postLeft.appendChild(authorDateContainer);
+  postLeft.appendChild(postTitle);
+  postLeft.appendChild(keywordsTag);
+
+  if (isDelEdit) {
+    const delEditBtnContainer = createDelEdit(postId);
+    postLeft.appendChild(delEditBtnContainer);
   }
+  postRight.appendChild(imgElement);
 
-  imgContainer.classList.add("img-container");
-  authorSpan.classList.add("author");
-  h2Element.classList.add("post-title");
-  paraElement.classList.add("post-content");
-  liElement.classList.add("post-card");
-
-  authorSpan.innerText = author;
-  h2Element.innerText =
-    title.length > 20 ? title.substring(0, 20) + "..." : title;
-  paraElement.innerText =
-    content.length > 30 ? content.substring(0, 30) + "..." : content;
-
-  imgElement.setAttribute("src", postImgUrl);
-  imgElement.setAttribute("alt", "postImg");
-
-  imgContainer.appendChild(imgElement);
-  imgContainer.appendChild(authorSpan);
-
-  liElement.appendChild(imgContainer);
-  liElement.appendChild(h2Element);
-  liElement.appendChild(paraElement);
+  liElement.appendChild(postLeft);
+  liElement.appendChild(postRight);
 
   liElement.setAttribute("data-postId", postId);
   return liElement;
 };
 
-window.onload = async function () {
-  customHeader();
-  currentPageOutline();
+const renderPosts = (posts, searchFlag, isDelEdit) => {
+  isDelEdit = isDelEdit || false;
 
-  if (!isUserLoggedIn()) {
-    console.log("user not logged in");
-    setLoginErrorPage();
+  const postListContainerElement = document.getElementById(
+    "post-list-container"
+  );
+
+  if (searchFlag) {
+    postListContainerElement.innerHTML = "";
+  }
+
+  posts.forEach((post) => {
+    let liElement = createPostElement(
+      post._id,
+      post.createdby,
+      post.title,
+      post.tags,
+      post.postImgUrl,
+      post.createdAt,
+      isDelEdit
+    );
+    postListContainerElement.appendChild(liElement);
+  });
+};
+
+const renderResultNotFound = (found) => {
+  const resNotFoundTag = document.getElementById("no-res-found-container");
+
+  toggleDisplay(resNotFoundTag, found);
+};
+
+const renderEmptySearch = (emptyFlag) => {
+  const postListContainerElement = document.getElementById(
+    "post-list-container"
+  );
+  const loadMoreBtn = document.getElementById("load-more");
+
+  if (getCookie("writeSearchParameters") && emptyFlag) {
+    clearCookie("writeSearchParameters");
+  }
+  toggleDisplay(postListContainerElement, !emptyFlag, !emptyFlag ? "grid" : "");
+  toggleDisplay(loadMoreBtn, !emptyFlag);
+  renderResultNotFound(emptyFlag);
+};
+const getSearchQueryParameters = (search, cookieName) => {
+  if (getCookie(cookieName || "writeSearchParameters")) {
+    clearCookie(cookieName || "writeSearchParameters");
+  }
+  if (!search) {
+    return null;
+  }
+
+  setCookieWithExpirationInSeconds(
+    cookieName || "writeSearchParameters",
+    search,
+    86400
+  );
+
+  const searchParameters = {};
+
+  if (search.length != 0 && search[0] === "#") {
+    searchParameters.tags = search.split("#")[1];
   } else {
-    console.log("user logged in");
-    setPostPage();
-    const userAvatarElement = document.getElementById("avatar");
-    userAvatarElement.addEventListener("click", () => {
-      console.log("clicle");
-      document.location.href = `../pages/profile.html`;
-    });
+    searchParameters.title = search;
+  }
 
-    const loaderContainer = document.getElementById("loader");
-    loaderContainer.classList.add("loader-visible");
-    getAndSetUserInfo();
-    const posts = await getAllPost();
+  return searchParameters;
+};
 
-    const postListContainerElement = document.getElementById(
-      "post-list-container"
+const handleSearchResults = async (
+  searchParameters,
+  searchFlag,
+  setPageCookie,
+  isAuthor,
+  pageCookieName,
+  totalPageCookieName
+) => {
+  let page = searchFlag ? 1 : getCookie(pageCookieName || "page") || 1;
+
+  const limit = page * 8;
+
+  const postsData = await fetchPosts(
+    1,
+    limit,
+    searchParameters?.title || "",
+    searchParameters?.tags || "",
+    isAuthor
+      ? getQueryParams(document.location.href)?.username ||
+          getCookie("username")
+      : ""
+  );
+
+  if (limit == 8) {
+    setPageCookie(
+      page,
+      searchFlag || searchParameters
+        ? Math.ceil(postsData.posts.length / 8)
+        : postsData.totalPages
+    );
+  }
+
+  const loadMoreBtn = document.getElementById("load-more");
+  loadMoreBtn.style.display =
+    getCookie(totalPageCookieName || "totalPages") != page ? "flex" : "none";
+
+  return postsData.posts;
+};
+
+const setPageCookie = (page, totalPages) => {
+  if (getCookie("page")) {
+    clearCookie("page");
+  }
+
+  if (totalPages) {
+    if (getCookie("totalPages")) {
+      clearCookie("totalPages");
+    }
+    setCookieWithExpirationInSeconds("totalPages", totalPages, 86400);
+  }
+
+  setCookieWithExpirationInSeconds("page", page, 86400);
+};
+
+const handleLoadMore = async () => {
+  const loadMoreLoader = document.getElementById("load-more-loader");
+
+  toggleDisplay(loadMoreBtn, false);
+  toggleDisplay(loadMoreLoader, true);
+
+  const page = parseInt(getCookie("page")) + 1;
+
+  const searchQuery = getSearchQueryParameters(
+    getCookie("writeSearchParameters") || ""
+  );
+
+  const { posts, totalPages } = await fetchPosts(
+    page,
+    8,
+    searchQuery?.title,
+    searchQuery?.tags
+  );
+
+  setPageCookie(page);
+
+  if (posts?.length === 0) {
+    toggleDisplay(loadMoreBtn, false);
+    toggleDisplay(loadMoreLoader, false);
+  } else if (posts) {
+    toggleDisplay(loadMoreBtn, !page === totalPages);
+    toggleDisplay(loadMoreLoader, false);
+    renderPosts(posts);
+    // loadMoreBtn.style.display = page === totalPages ? "none" : "flex";
+  } else {
+    toggleDisplay(loadMoreBtn, true);
+    toggleDisplay(loadMoreLoader, false);
+    alert("something went wrong please try again");
+  }
+};
+
+const handleSearch = async (event, cookieName, isAuthor) => {
+  if (event) {
+    event.preventDefault();
+  }
+  const loaderContainer = document.getElementById("loader");
+  renderResultNotFound(false);
+  toggleDisplay(loaderContainer, true);
+
+  if (!searchBarTag?.value) {
+    toggleDisplay(loaderContainer, false);
+    renderEmptySearch(true);
+  } else {
+    renderEmptySearch(false);
+    const searchQuery = getSearchQueryParameters(
+      searchBarTag.value,
+      cookieName
     );
 
-    loaderContainer.classList.remove("loader-visible");
-    posts.forEach((post) => {
-      let liElement = createPostElement(
-        post._id,
-        post.createdBy,
-        post.title,
-        post.content,
-        post.postImgUrl
-      );
+    const posts = await handleSearchResults(
+      searchQuery,
+      true,
+      setPageCookie,
+      isAuthor
+    );
 
-      liElement.addEventListener("click", () => {
-        window.location.href = `../pages/posts.html?id=${liElement.dataset.postid}`;
-      });
+    toggleDisplay(loaderContainer, false);
 
-      postListContainerElement.appendChild(liElement);
-    });
-
-    // const hIcon = document.getElementById("h-icon");
-    // const navItemList = document.getElementById("nav-item-list");
-
-    // hIcon.addEventListener("click", () => {
-    //   navItemList.style.display =
-    //     navItemList.style.display == "flex" ? "none" : "flex";
-    // });
+    if (posts && posts?.length === 0) {
+      renderEmptySearch(true);
+      renderResultNotFound(true);
+    } else {
+      renderPosts(posts, true);
+    }
   }
+};
+
+window.onload = async function () {
+  customHeader();
+  renderResultNotFound(false);
+  if (!isUserLoggedIn()) {
+    renderLoginErrInfo();
+  } else {
+    renderPostSection();
+    const loaderContainer = document.getElementById("loader");
+    toggleDisplay(loaderContainer, true);
+
+    const searchQuery = getSearchQueryParameters(
+      getCookie("writeSearchParameters") || ""
+    );
+
+    if (searchQuery) {
+      searchBarTag.value = searchQuery?.title || searchQuery?.tags;
+    }
+
+    const posts = await handleSearchResults(
+      searchQuery,
+      false,
+      setPageCookie,
+      false
+    );
+
+    toggleDisplay(loaderContainer, false);
+    if (posts && posts?.length === 0) {
+      renderResultNotFound(true);
+    } else {
+      renderPosts(posts, true);
+    }
+  }
+};
+
+const loadMoreBtn = document.getElementById("load-more");
+
+loadMoreBtn?.addEventListener("click", handleLoadMore);
+
+searchIconTag.addEventListener("click", (e) => {
+  handleSearch(e, "", false);
+});
+
+searchBarFormTag?.addEventListener("submit", (e) => {
+  handleSearch(e, "", false);
+});
+
+const handlePostRedirect = (event) => {
+  let currentElement = event.target;
+  while (currentElement) {
+    if (currentElement.classList.contains("post-card")) {
+      break;
+    }
+    if (currentElement.dataset.postid) {
+      break;
+    }
+    currentElement = currentElement.parentElement;
+  }
+  window.location.href =
+    "../pages/posts.html?postId=" + currentElement.dataset?.postid || "";
+};
+
+postListContainerElement.addEventListener("click", async (e) => {
+  console.log(e.target)
+  if (e.target.classList.contains("p-card")) {
+    handlePostRedirect(e);
+  }
+});
+
+export {
+  fetchPosts,
+  handleSearchResults,
+  getSearchQueryParameters,
+  renderPosts,
+  handleSearch,
+  handleLoadMore,
 };

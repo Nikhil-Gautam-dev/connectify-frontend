@@ -36,20 +36,16 @@ form.addEventListener("submit", (e) => {
   newFormData.append("gender", gender);
 
   if (file) {
-    console.log(file);
     newFormData.append("avatar", file);
   }
 
   const URL =  USER_URL + "auth/signup"
-  // "http://localhost:8000/api/v1/users/auth/signup"
-    // "https://connectify-backend-api.onrender.com/api/v1/users/auth/signup";
 
   fetch(URL, {
     method: "POST",
     body: newFormData,
   })
     .then((res) => {
-      console.log(res.status);
 
       if (res.status == 409) {
         alert("user already exist with email or username");
@@ -73,11 +69,9 @@ form.addEventListener("submit", (e) => {
         res = res.json();
         loaderDiv.classList.toggle("loader-visible");
         window.location.href = "./login.html";
-        console.log(res);
         return
       }
     })
     .catch((error) => {
-      console.log("error");
     });
 });

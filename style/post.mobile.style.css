@@ -1,24 +1,183 @@
 @media screen and (max-width: 480px) {
-    .main{
-        background-color:#0451df ;
-        padding: 10px 0px;
-    }
 
-    .title-container>h1{
-        font-size: 1.2rem; 
+    .dynamic-data {
         margin-top: 40px;
     }
 
-    .img-container{
-        padding: 2px;
+    .post-section {
+        gap: 0px;
     }
 
-    .user-info-section{
+    .post-container {
+        background-color: unset;
+    }
+
+    .title-container {
+        display: flex;
+        padding: 20px;
+        margin: 0px;
+    }
+
+    .title-container>h1 {
+        font-size: 2rem;
+        margin-top: 40px;
+        color: black;
+        margin: 0px;
+        text-align: left;
+    }
+
+    .user-info-section {
+        padding: 0px;
+    }
+
+    .user-info {
+        background-color: unset;
+        background: none;
+        box-shadow: none;
+        padding: 0px 20px;
+    }
+
+    .user-img-title-container {
+        gap: 10px;
+    }
+
+    .user-img-title-container>span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .user-img-title-container>span>img {
+        width: 50px;
+    }
+
+    .img-container {
         padding: 10px;
+        margin: 0px;
+        box-shadow: none;
+        border-radius: 0%;
+    }
+
+    .img-container>img {
+        border: 2px solid #dcdcdc;
+        border-radius: 0%;
     }
 
 
-    .err-info{
+    .published-date>span {
+        font-size: 0.8rem;
+        color: #636363;
+    }
+
+
+    .err-info {
         display: none;
+        text-align: center;
+        margin-top: 50%;
+    }
+
+    .username-follower-container {
+        padding: 10px 0px;
+    }
+
+    .username-follow-btn-container {
+        display: flex;
+        gap: 5px;
+    }
+
+    .follow-btn-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .follow-btn-container>span {
+        color: green;
+    }
+
+    .follow-loader-container {
+        position: relative;
+        width: unset;
+        padding: 0px;
+    }
+
+    .follow-loader-container>span {
+        width: 20px;
+        height: 20px;
+        border: 2px solid black;
+        border-bottom-color: transparent;
+        aspect-ratio: 1;
+
+    }
+
+    .content-container {
+        padding: 0px;
+    }
+
+    .login-btn {
+        background-color: #22577a;
+        border: 2px solid #22577a;
+        color: white;
+    }
+
+    #login-btn>a {
+        color: white;
+    }
+
+    .not-login-section>h1 {
+        font-size: 6rem;
+        letter-spacing: 10px;
+        line-height: unset;
+    }
+
+    .not-login-section>p {
+        font-size: 1rem;
+    }
+
+    .not-login-section>button {
+        height: 30px;
+        width: 90px;
+        font-size: 12px;
+        border-radius: 5px;
+    }
+
+    #login-btn:hover {
+        background-color: #38a3a5;
+        border: 2px solid #38a3a5;
+        color: white;
+    }
+
+    #login-btn>a:hover {
+        height: 30px;
+        width: 90px;
+        font-size: 1rem;
+        border-radius: 5px;
+        background-color: #38a3a5;
+        border: 2px solid #38a3a5;
+        color: white;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+    }
+
+    .not-login-section>button:hover {
+        background-color: #38a3a5;
+        border: 2px solid #38a3a5;
+        color: white;
+    }
+
+    .u-content-container{
+        padding: 10px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #dcdcdc;
+    }
+
+    #content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        font-size: larger;
     }
 }

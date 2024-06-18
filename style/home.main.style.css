@@ -217,7 +217,7 @@ box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     font-weight: 800;
 }
 
-.login-btn{
+.login-btn, #load-more{
     margin-top: 10px;
     width: 150px;
     height: 50px;
@@ -243,6 +243,11 @@ box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 #login-btn:hover{
+    background-color: #4d81fb;
+    border: 2px solid #4d81fb;
+   
+}
+#load-more:hover{
     background-color: #4d81fb;
     border: 2px solid #4d81fb;
    
@@ -296,4 +301,19 @@ box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     text-align: center;
     font-weight: 600;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.load-more-btn-container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: 40px 0px;
+}
+
+#load-more{
+    display: none;
+}
+
+.load-more-loader-container{
+    display: none;
 }

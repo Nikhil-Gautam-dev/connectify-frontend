@@ -3,41 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <link rel="stylesheet" href="../style/profile.style.css" />
-    <link rel="stylesheet" href="../style/footerAndHeader.style.css">
-    <link rel="stylesheet" href="../style/profile.mobile.style.css">
+    <link rel="stylesheet" href="../style/footerAndHeader.style.css" />
+    <link rel="stylesheet" href="../style/profile.mobile.style.css" />
     <script type="module" src="../scripts/profile.script.js"></script>
     <title>profile</title>
   </head>
   <body>
     <div class="main" id="main">
-     
-       
-
+      <section class="refresh-err-info" id="refresh-err-info">
+        Something went wrong please refresh!
+      </section>
       <section class="hero">
         <div class="hero-content">
           <div class="profile-img">
-            <img src="../assests/avatar.jpg" alt="" id="avatar"/>
+            <img src="../assests/avatar.jpg" alt="" id="profile-img" />
           </div>
           <div class="username" id="username">loading..</div>
           <div class="follower-container">
-            <span id="follower-count">loadin..</span>
             <span>followers</span>
+            <span id="follower-count">loadin..</span>
           </div>
-
-          <p class="bio" id="bio">
-            loading..
-          </p>
+          <div class="follow-btn-container" id="follow-btn-container">
+            <span id="follow-btn">follow</span>
+            <div class="follow-loader-container" id="follow-loader">
+                <span class="loader"></span>
+              </div>
+        </div>
+          <p class="bio" id="bio">loading..</p>
           <textarea id="edit-bio-textarea" maxlength="100"></textarea>
 
-          
-
           <div class="save-cancel-btn-container">
-            <button class="edit-bio-btn" id="edit-bio-btn">edit</button>
-            <button class="cancel-bio-btn" id="cancel-bio-btn">cancel</button>
+            <span
+              class="edit-bio-btn fa-solid fa-pen-to-square edit"
+              id="edit-bio-btn"
+            ></span>
+            <span
+              class="cancel-bio-btn fa-solid fa-xmark"
+              id="cancel-bio-btn"
+            ></span>
           </div>
 
-        
           <div class="loader-container" id="edit-loader">
             <span class="loader"></span>
           </div>
@@ -45,16 +55,57 @@
       </section>
     </div>
 
-
-
-
     <section class="posts-section" id="posts">
       <div class="post-container">
-        <span class="post-heading"> Posts </span>
+        <div class="heading-search-container">
+          <span class="post-heading"> Posts </span>
+          <div class="search-bar-container">
+            <form action="#" id="search-bar-form">
+
+              <input type="text" id="search-bar"/>
+            </form>
+            <span class="search-icon"
+              ><i class="fa-solid fa-magnifying-glass" id="search-icon"></i
+            ></span>
+          </div>
+        </div>
         <ul id="post-list-container">
-         
+          <li class="post-card">
+            <div class="post-left">
+              <div class="author-date-container">
+                <span class="author">Nikhil</span>
+                <span class="published-date">
+                  <span class="month">jun</span>
+                  <span class="date">6,</span>
+                  <span class="year">2024</span>
+                </span>
+              </div>
+              <div class="post-title">
+                How to become hokage in one day without any hardork or
+                reincarnation jutsu or any pure clan blood
+              </div>
+              <div class="keywords">#hokage #Naruto #clan #jutsu #shortcut</div>
+              <div class="edit-del-container">
+                <span class="fa-regular fa-trash-can"></span>
+                <span class="fa-solid fa-pen-to-square edit"></span>
+              </div>
+            </div>
+            <div class="post-right">
+              <img src="../assests/bg2.jpg" alt="img" />
+            </div>
+          </li>
         </ul>
         <div class="loader-container" id="loader">
+          <span class="loader"></span>
+        </div>
+        <div class="no-res-found-container" id="no-res-found-container">
+          <img src="../assests/no-result-found.png" alt="">
+          <div>Sorry,No result found!</div>
+        </div>
+      </div>
+      <div class="load-more-btn-container">
+        <button id="load-more">load more</button>
+        <div class="load-more-loader-container" id="load-more-loader">
           <span class="loader"></span>
         </div>
       </div>

@@ -2,6 +2,7 @@
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .main {
@@ -10,8 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgb(131, 58, 180);
-    background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+    background: #22577a;
 }
 
 .container {
@@ -60,12 +60,12 @@ input {
     font-size: 1.2rem;
 }
 
-#avatar{
+#avatar {
     display: inline;
     width: 50%;
 }
 
-input:focus{
+input:focus {
     background-color: transparent;
     background: none;
 }
@@ -87,30 +87,27 @@ input:focus{
 .submit-btn>input {
     height: 40px;
     width: 40%;
-    background: rgb(131,58,180);
-    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
     color: white;
     font-size: 1.2rem;
     border: none;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     font-weight: 600;
+    background-color: #22577a;
 }
 
-.submit-btn>input:hover{
-    background: rgb(131,58,180);
-    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,0.4515056022408963) 56%, rgba(252,176,69,1) 100%);
-    color: rgb(38, 38, 38);
+.submit-btn>input:hover {
+    background-color: #0084db;
 }
 
 @media screen and (max-width: 480px) {
-    .container{
+    .container {
         width: 90%;
     }
-  }
+}
 
 
-.loader-container{
+.loader-container {
     width: 40%;
     display: none;
     flex-direction: column;
@@ -122,7 +119,7 @@ input:focus{
 
 }
 
-.loader-visible{
+.loader-visible {
     display: flex;
 }
 
@@ -135,29 +132,30 @@ input:focus{
     display: inline-block;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
-    }
+}
 
-    @keyframes rotation {
+@keyframes rotation {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
-    } 
+}
 
 
-.sub-disable-btn{
+.sub-disable-btn {
     background: black;
 }
 
-#reg-btn{
+#reg-btn {
     color: #0648dd;
     border-bottom: 1px solid #0648dd;
     cursor: pointer;
 }
 
-#reg-btn:hover{
+#reg-btn:hover {
     color: #3b71ee;
     border-bottom: 1px solid #3b71ee;
 }

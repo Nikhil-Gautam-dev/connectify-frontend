@@ -1,6 +1,5 @@
-
+import { getCookie } from "./utils.script.js";
 const customHeader = () => {
-  console.log("hlo world")
   const mainElement = document.getElementById("main");
   const header = document.createElement("header");
   header.innerHTML = `
@@ -10,15 +9,15 @@ const customHeader = () => {
   </div>
   <div class="nav-items">
     <span class="h-icon" id="h-icon">
-      <img src="../assests/h-icon.webp" alt="">
+      <img src="../assests/h-w-icon.png" alt="">
     </span>
     <ul class="nav-item-list" id="nav-item-list">
+    <span id="avatar-li"><a href="../pages/profile.html"><img src="../assests/avatar.jpg" alt="avatar" id="avatar"/></a></span>
+    <li class="login-btn" id="login-btn"><a href="../pages/login.html">login</a></li>
       <li id="home"><a href="../pages/home.html">home</a></li>
       <li id="write"><a href="../pages/write.html">write</a></li>
       <li id="posts"><a href="#posts">posts</a></li>
       <li id="about"><a href="#">about</a></li>
-      <span id="avatar-li"><img src="../assests/avatar.jpg" alt="avatar" id="avatar"/></span>
-      <li class="login-btn" id="login-btn"><a href="#">login</a></li>
     </ul>
   </div>
 </nav>`;
@@ -27,14 +26,17 @@ const customHeader = () => {
 
   const hIcon = document.getElementById("h-icon");
   const navItemList = document.getElementById("nav-item-list");
-  console.log(window.innerWidth)
+  const userAvatar = document.getElementById("avatar");
+
+  userAvatar.setAttribute(
+    "src",
+    getCookie("avatar") || "../assests/avatar.jpg"
+  );
   if (window.innerWidth <= 480) {
-    console.log("mobile")
     hIcon.style.display = "flex";
     navItemList.style.display = "none";
   }
   else {
-    console.log("pc")
     hIcon.style.display = "none";
     navItemList.style.display = "flex";
   }

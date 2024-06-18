@@ -52,7 +52,6 @@ form.addEventListener("submit", (e) => {
   })
     .then((res) => {
 
-    console.log(res.status)
       if (res.status == 400) {
         alert("username or email is required");
         refreshOnError(true)
@@ -74,7 +73,6 @@ form.addEventListener("submit", (e) => {
       return res.json()
     })
     .then(res =>{
-       console.log(res.data)
        loaderDiv.classList.remove("loader-visible");
        setCookieWithExpirationInSeconds("accessToken",res.data.accessToken,parseInt(res.data.expiry))
        setCookieWithExpirationInSeconds("id",res.data.user._id,parseInt(res.data.expiry))
