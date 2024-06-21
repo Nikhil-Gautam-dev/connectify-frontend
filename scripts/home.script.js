@@ -182,14 +182,14 @@ const createPostElement = (
   return liElement;
 };
 
-const renderPosts = (posts, searchFlag, isDelEdit) => {
+const renderPosts = (posts, reRender, isDelEdit) => {
   isDelEdit = isDelEdit || false;
 
   const postListContainerElement = document.getElementById(
     "post-list-container"
   );
 
-  if (searchFlag) {
+  if (reRender) {
     postListContainerElement.innerHTML = "";
   }
 
@@ -219,7 +219,7 @@ const renderEmptySearch = (emptyFlag) => {
   );
   const loadMoreBtn = document.getElementById("load-more");
 
-  if (getCookie("writeSearchParameters") && emptyFlag) {
+  if (getCookie("writeSearchParameters") || emptyFlag) {
     clearCookie("writeSearchParameters");
   }
   toggleDisplay(postListContainerElement, !emptyFlag, !emptyFlag ? "grid" : "");
@@ -312,12 +312,13 @@ const handleLoadMore = async () => {
   toggleDisplay(loadMoreLoader, true);
 
   const page = parseInt(getCookie("page")) + 1;
+  const totalPages = getCookie("totalPages");
 
   const searchQuery = getSearchQueryParameters(
     getCookie("writeSearchParameters") || ""
   );
 
-  const { posts, totalPages } = await fetchPosts(
+  const { posts } = await fetchPosts(
     page,
     8,
     searchQuery?.title,
@@ -330,14 +331,34 @@ const handleLoadMore = async () => {
     toggleDisplay(loadMoreBtn, false);
     toggleDisplay(loadMoreLoader, false);
   } else if (posts) {
-    toggleDisplay(loadMoreBtn, !page === totalPages);
+    toggleDisplay(
+      loadMoreBtn,
+      !(getCookie("page") === getCookie("totalPages"))
+    );
     toggleDisplay(loadMoreLoader, false);
     renderPosts(posts);
-    // loadMoreBtn.style.display = page === totalPages ? "none" : "flex";
   } else {
     toggleDisplay(loadMoreBtn, true);
     toggleDisplay(loadMoreLoader, false);
     alert("something went wrong please try again");
+  }
+};
+
+const handleEmptySearch = async () => {
+  const loaderContainer = document.getElementById("loader");
+  toggleDisplay(loaderContainer, true);
+
+  if (getCookie("pages")) clearCookie("pages");
+  if (getCookie("totalPages")) clearCookie("totalPages");
+  if (getCookie("writeSearchParameters")) clearCookie("writeSearchParameters");
+
+  const posts = await handleSearchResults("", false, setPageCookie, false);
+
+  toggleDisplay(loaderContainer, false);
+  if (posts && posts?.length === 0) {
+    renderResultNotFound(true);
+  } else {
+    renderPosts(posts, true);
   }
 };
 
@@ -349,9 +370,10 @@ const handleSearch = async (event, cookieName, isAuthor) => {
   renderResultNotFound(false);
   toggleDisplay(loaderContainer, true);
 
-  if (!searchBarTag?.value) {
-    toggleDisplay(loaderContainer, false);
-    renderEmptySearch(true);
+  if (!searchBarTag?.value?.trim()) {
+    await handleEmptySearch();
+    renderEmptySearch(false);
+    return;
   } else {
     renderEmptySearch(false);
     const searchQuery = getSearchQueryParameters(
@@ -439,7 +461,7 @@ const handlePostRedirect = (event) => {
 };
 
 postListContainerElement.addEventListener("click", async (e) => {
-  console.log(e.target)
+  console.log(e.target);
   if (e.target.classList.contains("p-card")) {
     handlePostRedirect(e);
   }
