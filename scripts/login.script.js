@@ -98,10 +98,12 @@ const handleLoginForm = async (event) => {
 
   const { username, password } = getFormData();
 
+  console.log(password);
+
   const res = await postLoginRequest(username, password);
 
   if (res) {
-    handleResponseOnSuccess(res.data());
+    handleResponseOnSuccess(res.data);
   }
 };
 
