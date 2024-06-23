@@ -97,24 +97,25 @@
         width: auto;
         font-weight: 500;
         overflow-wrap: anywhere;
-        font-size: 14px;
+        font-size: 12px;
         justify-content: center;
         align-items: center;
     }
 
     .author-date-container {
         display: flex;
-        gap: 10px;
+        gap: 5px;
     }
 
     .published-date {
         display: flex;
         gap: 5px;
+        font-size: 12px;
     }
 
     .post-title {
-        font-size: 20px;
-        font-weight: 600;
+        font-size: 18px;
+        font-weight: 700;
         text-align: left;
     }
 
@@ -130,19 +131,9 @@
         align-items: center;
     }
 
-    .not-login-section {
-        margin: 10px;
+    .keywords {
+        font-size: 12px;
     }
-
-    .not-login-section>h1 {
-        font-size: 6rem;
-        letter-spacing: 5px;
-    }
-
-    .not-login-section>p {
-        font-size: 1.2rem;
-    }
-
 
     .heading-search-container {
         display: flex;
@@ -183,7 +174,7 @@
     }
 
     .loader-container {
-        display: flex;
+        display: none;
     }
 
     .no-res-found-container {
@@ -204,9 +195,7 @@
         font-size: 1.5rem;
     }
 
-    #load-more,
-    .login-btn,
-    #login-btn {
+    #load-more {
         width: 90px;
         height: 30px;
         font-size: 0.9rem;
@@ -217,27 +206,7 @@
         color: white;
     }
 
-    .login-btn {
-        width: 150px;
-        height: 50px;
-        font-size: 1.2rem;
-    }
 
-    #login-btn>a {
-        color: white;
-    }
-
-    #login-btn>a:hover {
-        font-size: 1rem;
-        background-color: #0084db;
-        color: white;
-    }
-
-    .not-login-section>button:hover {
-        background-color: #0084db;
-        border: 2px solid #0084db;
-        color: white;
-    }
 
     #load-more:hover {
         background-color: #0084db;

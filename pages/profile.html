@@ -7,6 +7,12 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="../style/profile.style.css" />
     <link rel="stylesheet" href="../style/footerAndHeader.style.css" />
     <link rel="stylesheet" href="../style/profile.mobile.style.css" />
@@ -31,9 +37,9 @@
           <div class="follow-btn-container" id="follow-btn-container">
             <span id="follow-btn">follow</span>
             <div class="follow-loader-container" id="follow-loader">
-                <span class="loader"></span>
-              </div>
-        </div>
+              <span class="loader"></span>
+            </div>
+          </div>
           <p class="bio" id="bio">loading..</p>
           <textarea id="edit-bio-textarea" maxlength="100"></textarea>
 
@@ -61,45 +67,19 @@
           <span class="post-heading"> Posts </span>
           <div class="search-bar-container">
             <form action="#" id="search-bar-form">
-
-              <input type="text" id="search-bar"/>
+              <input type="text" id="search-bar" />
             </form>
             <span class="search-icon"
               ><i class="fa-solid fa-magnifying-glass" id="search-icon"></i
             ></span>
           </div>
         </div>
-        <ul id="post-list-container">
-          <li class="post-card">
-            <div class="post-left">
-              <div class="author-date-container">
-                <span class="author">Nikhil</span>
-                <span class="published-date">
-                  <span class="month">jun</span>
-                  <span class="date">6,</span>
-                  <span class="year">2024</span>
-                </span>
-              </div>
-              <div class="post-title">
-                How to become hokage in one day without any hardork or
-                reincarnation jutsu or any pure clan blood
-              </div>
-              <div class="keywords">#hokage #Naruto #clan #jutsu #shortcut</div>
-              <div class="edit-del-container">
-                <span class="fa-regular fa-trash-can"></span>
-                <span class="fa-solid fa-pen-to-square edit"></span>
-              </div>
-            </div>
-            <div class="post-right">
-              <img src="../assests/bg2.jpg" alt="img" />
-            </div>
-          </li>
-        </ul>
+        <ul id="post-list-container"></ul>
         <div class="loader-container" id="loader">
           <span class="loader"></span>
         </div>
         <div class="no-res-found-container" id="no-res-found-container">
-          <img src="../assests/no-result-found.png" alt="">
+          <img src="../assests/no-result-found.png" alt="" />
           <div>Sorry,No result found!</div>
         </div>
       </div>

@@ -5,14 +5,7 @@
     color: black;
 }
 
-/* .main {
-    background-image: url("../assests/bg.avif");
-    padding-top: 10px;
-    border-bottom-left-radius: 50%;
-    border-bottom-right-radius: 50%;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    ;
-} */
+
 
 .h-icon {
     display: none;
@@ -81,7 +74,7 @@ nav {
 
     }
 
-    nav{
+    nav {
         background-color: #22577a;
     }
 
@@ -134,5 +127,98 @@ nav {
         margin: 0px;
         border-radius: 50%;
     }
+
+    .login-btn,
+    .logout-btn,
+    #login-btn {
+        width: 90px;
+        height: 30px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: 600;
+        background-color: #22577a;
+        color: white;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        display: none;
+        color: white;
+    }
+
+    .logout-btn:hover {
+        background-color: #38a3a5;
+
+    }
+
+    #login-btn {
+        color: white;
+        border: none;
+
+    }
+
+    #login-btn:hover {
+        background-color: #38a3a5;
+        color: white;
+        border: none;
+
+    }
+
+    #logout-btn>a {
+        color: white;
+    }
+
+    #login-btn>a,
+    .login-btn>a {
+        color: white;
+    }
+
+    #logout-btn>a:hover {
+        height: 30px;
+        width: 90px;
+        font-size: 1rem;
+        border-radius: 5px;
+        background-color: #38a3a5;
+        color: white;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+    }
+
+    #login-btn>a:hover {
+        height: 30px;
+        width: 90px;
+        font-size: 1rem;
+        border-radius: 5px;
+        background-color: #38a3a5;
+        color: white;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+    }
+
+    .not-login-section {
+        margin-top: 40px;
+    }
+
+    .not-login-section>h1 {
+        font-size: 40px;
+        line-height: normal;
+        letter-spacing: normal;
+        font-weight: 600;
+    }
+
+    .not-login-section>p {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .not-login-section>button:hover {
+        background-color: #38a3a5;
+        color: white;
+    }
+
 
 }

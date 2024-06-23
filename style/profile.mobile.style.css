@@ -1,4 +1,9 @@
 @media screen and (max-width: 480px) {
+    * {
+        font-family: "Open Sans", "sans-serif";
+
+    }
+
     .username {
         font-size: 2rem;
         color: black;
@@ -54,19 +59,22 @@
 
     .post-container>ul {
         grid-template-columns: auto;
-        padding: 20px 0px;
-        /* justify-content: center; */
+        padding: 0px;
+        justify-content: center;
+        gap: 60px;
+        top: 50px;
+        width: 100%;
     }
 
     .post-container>ul>li {
-        width: 100%;
-        border: 2px solid #dcdcdc;
-        border-radius: 0%;
-        box-shadow: none;
-        flex-direction: row;
-        justify-content: space-between;
         padding: 10px;
         gap: 30px;
+        width: 100vw;
+        flex-direction: row;
+        justify-content: space-between;
+        box-shadow: none;
+        border-radius: 0%;
+        border: 2px solid #dcdcdc;
     }
 
     .post-card {
@@ -95,49 +103,61 @@
     }
 
     .author {
-        display: inline;
+        display: flex;
         position: relative;
         width: auto;
         font-weight: 500;
+        overflow-wrap: anywhere;
+        font-size: 12px;
+        justify-content: center;
+        align-items: center;
     }
 
     .author-date-container {
         display: flex;
-        gap: 10px;
+        gap: 5px;
     }
 
     .published-date {
         display: flex;
         gap: 5px;
+        font-size: 12px;
     }
 
     .post-title {
-        font-size: 1.2rem;
+        font-size: 18px;
+        font-weight: 700;
+        text-align: left;
     }
 
     .post-heading {
-        font-size: 1.2rem;
+        font-size: 12px;
         border-radius: 0%;
         background-color: #22577a;
+        padding: 0px;
+        margin: 0px;
+        width: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
     }
 
-    .post-heading {
-        font-size: 1.2rem;
-        border-radius: 0%;
-        background-color: #22577a;
-        width: 100px;
+    .keywords {
+        font-size: 12px;
     }
 
-    .edit-bio-btn{
+    .edit-bio-btn {
         display: none;
     }
+
     .edit-bio-btn:hover {
         color: black;
         background-color: white;
 
     }
 
-    .cancel-bio-btn{
+    .cancel-bio-btn {
         display: none;
     }
 
@@ -155,7 +175,7 @@
     }
 
     .save-cancel-btn-container>span {
-        font-size: 1.5rem;
+        font-size: 18px
     }
 
     .heading-search-container {
@@ -166,13 +186,25 @@
 
     .search-bar-container {
         display: flex;
-        gap: 20px;
+        gap: 10px;
+    }
+
+    .search-bar-container>form>input {
+        padding: 4px 10px;
+        border: 1px solid black;
+        border-radius: 5px;
+        outline: none;
     }
 
     .search-bar-container>input {
         padding: 4px;
         outline: #22577a;
-        border: 1px solid black;
+    }
+
+    .search-bar-container>span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .login-btn {
@@ -187,7 +219,7 @@
         height: 100vh;
     }
 
-    .no-res-found-container{
+    .no-res-found-container {
         display: none;
         justify-content: center;
         align-items: center;
@@ -196,22 +228,23 @@
         gap: 20px;
     }
 
-    .no-res-found-container>img{
+    .no-res-found-container>img {
         width: 100px;
         object-fit: contain;
     }
-    .no-res-found-container>div{
+
+    .no-res-found-container>div {
         font-size: 1.5rem;
     }
 
-    .load-more-btn-container{
+    .load-more-btn-container {
         display: flex;
         width: 100%;
         justify-content: center;
         margin: 0px;
     }
 
-    #load-more{
+    #load-more {
         width: 90px;
         height: 30px;
         font-size: 0.9rem;
@@ -226,38 +259,40 @@
         margin: 20px 0px;
     }
 
-    #load-more:hover{
+    #load-more:hover {
         background-color: #0084db;
         border: 2px solid #0084db;
     }
 
-    #load-more-loader{
+    #load-more-loader {
         display: none;
     }
 
-    .edit-del-container{
+    .edit-del-container {
         display: flex;
         gap: 10px;
     }
-    .edit-del-container>span{
+
+    .edit-del-container>span {
         font-size: 16px;
     }
 
-    .follow-btn-container{
+    .follow-btn-container {
         display: flex;
         gap: 10px;
     }
 
-    #follow-btn{
+    #follow-btn {
         font-size: 1.2rem;
         color: #22577a;
         display: none;
     }
 
-    #follow-loader{
+    #follow-loader {
         display: none;
     }
-    .follow-loader-container>span{
+
+    .follow-loader-container>span {
         height: 24px;
         width: 24px;
         border-width: 2px;

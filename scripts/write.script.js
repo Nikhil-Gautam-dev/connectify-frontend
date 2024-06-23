@@ -8,7 +8,6 @@ import {
 import { customHeader } from "./footerAndHeader.script.js";
 
 const form = document.getElementById("form");
-const loginbtns = document.getElementsByClassName("login-btn");
 
 const createOrUpdatePost = async (postId, method, data) => {
   console.log(data);
@@ -133,15 +132,10 @@ const tinyMcePlugin = () => {
 };
 
 const renderLoginPage = (loginFlag) => {
-  const notLoginSection = document.getElementById("not-login-section");
   const loaderDiv = document.getElementById("loader");
   const writeSection = document.getElementById("write-section");
   const userAvatar = document.getElementById("avatar");
-  const loginbtns = document.getElementsByClassName("login-btn");
 
-  toggleDisplay(notLoginSection, loginFlag);
-  toggleDisplay(loginbtns[0], loginFlag);
-  toggleDisplay(loginbtns[1], loginFlag);
   toggleDisplay(userAvatar, !loginFlag);
   toggleDisplay(writeSection, !loginFlag);
   toggleDisplay(loaderDiv, false);
@@ -234,9 +228,3 @@ window.onload = async () => {
     }
   }
 };
-
-Array.from(loginbtns).forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.location.href = "../pages/login.html";
-  });
-});

@@ -10,13 +10,13 @@ import {
   setCookieWithExpirationInSeconds,
   clearCookie,
 } from "./utils.script.js";
+
 import {
-  renderPosts,
-  handleSearchResults,
   getSearchQueryParameters,
-  handleSearch,
-  handleLoadMore,
-} from "./home.script.js";
+  renderPosts,
+  fetchPosts,
+  renderResultNotFound,
+} from "./homeProfile.utils.js";
 
 const token = getCookie("accessToken");
 const postListContainerElement = document.getElementById("post-list-container");
@@ -30,36 +30,6 @@ const searchIconTag = document.getElementById("search-icon");
 let isFollowed;
 
 const followBtnTag = document.getElementById("follow-btn");
-
-const getUserPosts = async (username) => {
-  const URL = POST_URL + `query/search/?page=1&limit=8&creator=${username}`;
-  let posts = "";
-
-  await fetch(URL, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((res) => {
-      if (res.status == 200) {
-        return res.json();
-      } else {
-        return null;
-      }
-    })
-    .then((res) => {
-      if (res) {
-        posts = res.posts;
-        return;
-      } else {
-        return null;
-      }
-    });
-
-  return posts;
-};
 
 const fetchUserInfo = async (username) => {
   if (!username) return [];
@@ -97,50 +67,6 @@ const fetchUserInfo = async (username) => {
   return user;
 };
 
-const createPostElement = (postId, author, title, content, postImgUrl) => {
-  const liElement = document.createElement("li");
-  const imgContainer = document.createElement("div");
-  const imgElement = document.createElement("img");
-  const authorSpan = document.createElement("span");
-  const h2Element = document.createElement("h2");
-  const paraElement = document.createElement("p");
-
-  if (content.includes("<")) {
-    content = content.replace(/<\/?[^>]+(>|$)/g, "");
-  }
-
-  imgContainer.classList.add("img-container");
-  authorSpan.classList.add("author");
-  h2Element.classList.add("post-title");
-  paraElement.classList.add("post-content");
-  liElement.classList.add("post-card");
-
-  imgContainer.setAttribute("data-postid", postId);
-  authorSpan.setAttribute("data-postid", postId);
-  h2Element.setAttribute("data-postid", postId);
-  paraElement.setAttribute("data-postid", postId);
-  imgElement.setAttribute("data-postid", postId);
-
-  authorSpan.innerText = author;
-  h2Element.innerText =
-    title.length > 20 ? title.substring(0, 20) + "..." : title;
-  paraElement.innerText =
-    content.length > 30 ? content.substring(0, 30) + "..." : content;
-
-  imgElement.setAttribute("src", postImgUrl);
-  imgElement.setAttribute("alt", "postImg");
-
-  imgContainer.appendChild(imgElement);
-  imgContainer.appendChild(authorSpan);
-
-  liElement.appendChild(imgContainer);
-  liElement.appendChild(h2Element);
-  liElement.appendChild(paraElement);
-
-  liElement.setAttribute("data-postId", postId);
-  return liElement;
-};
-
 const renderUserInfo = (user, isUser) => {
   const usernameElement = document.getElementById("username");
   const profileAvatarElement = document.getElementById("profile-img");
@@ -158,44 +84,6 @@ const renderUserInfo = (user, isUser) => {
   bio.innerText = user?.bio || "This is your bio section you can edit it !";
   toggleDisplay(cancelBioBtn, false);
   toggleDisplay(editBioBtn, isUser);
-};
-
-const setPosts = (posts) => {
-  posts.forEach((post) => {
-    let liElement = createPostElement(
-      post._id,
-      post.createdBy,
-      post.title,
-      post.content,
-      post.postImgUrl
-    );
-
-    if (!isNotUser) {
-      const delEditBtnContainer = document.createElement("div");
-      const deleteBtn = document.createElement("button");
-      const EditBtn = document.createElement("button");
-
-      delEditBtnContainer.classList.add("del-edit-btn-container");
-
-      deleteBtn.classList.add("del");
-      deleteBtn.id = "del";
-      deleteBtn.innerText = "Delete";
-
-      EditBtn.classList.add("edit");
-      EditBtn.id = "edit";
-      EditBtn.innerText = "Edit";
-
-      deleteBtn.setAttribute("data-postid", post._id);
-      EditBtn.setAttribute("data-postid", post._id);
-
-      delEditBtnContainer.append(deleteBtn);
-      delEditBtnContainer.append(EditBtn);
-
-      liElement.append(delEditBtnContainer);
-    }
-
-    postListContainerElement.appendChild(liElement);
-  });
 };
 
 const deletePost = async (postId) => {
@@ -231,7 +119,6 @@ const deletePost = async (postId) => {
 
 const updateBio = async (newBio) => {
   const URL = USER_URL + "bio";
-  // "https://connectify-backend-api.onrender.com/api/v1/users/bio";
   let check = false;
   const data = {
     bio: newBio,
@@ -345,6 +232,46 @@ const handleDeletePost = async (event) => {
   toggleDisplay(postListContainerElement, true, "grid");
 };
 
+const handleSearchResults = async (
+  searchParameters,
+  searchFlag,
+  isAuthor,
+  pageCookieName,
+  totalPageCookieName
+) => {
+  let page = searchFlag ? 1 : getCookie(pageCookieName || "page") || 1;
+
+  const limit = page * 8;
+
+  const postsData = await fetchPosts(
+    1,
+    limit,
+    searchParameters?.title || "",
+    searchParameters?.tags || "",
+    isAuthor
+      ? getQueryParams(document.location.href)?.username ||
+          getCookie("username")
+      : ""
+  );
+
+  if (limit == 8) {
+    setPageCookie(
+      page,
+      searchFlag || searchParameters
+        ? Math.ceil(postsData.posts.length / 8)
+        : postsData.totalPages
+    );
+  }
+
+  const loadMoreBtn = document.getElementById("load-more");
+  loadMoreBtn.style.display =
+    getCookie(totalPageCookieName || "totalPages") != page.toString()
+      ? "flex"
+      : "none";
+
+  return postsData.posts;
+};
+
 const handleUsersAndPost = async () => {
   const username =
     getQueryParams(document.location.href)?.username || getCookie("username");
@@ -374,7 +301,6 @@ const handleUsersAndPost = async () => {
       const posts = await handleSearchResults(
         searchQuery || true,
         false,
-        setPageCookie,
         true,
         "profile_page",
         "profile_totalPages"
@@ -386,10 +312,128 @@ const handleUsersAndPost = async () => {
         renderRefreshErrElements(true);
       } else {
         renderUserInfo(user, user.username === getCookie("username"));
-        renderPosts(posts, false, user.username === getCookie("username"));
+        renderPosts(posts, true, user.username === getCookie("username"));
         isFollowed = (await renderFollowBtn(user)) || false;
       }
     }
+  }
+};
+
+const handleEmptySearch = async () => {
+  const loaderContainer = document.getElementById("loader");
+  toggleDisplay(loaderContainer, true);
+
+  if (getCookie("profile_page")) clearCookie("profile_page");
+  if (getCookie("profile_totalPages")) clearCookie("profile_totalPages");
+  if (getCookie("profileSearchParameters"))
+    clearCookie("profileSearchParameters");
+
+  const posts = await handleSearchResults(
+    "",
+    true,
+    true,
+    "profile_page",
+    "profile_totalPages"
+  );
+
+  toggleDisplay(loaderContainer, false);
+
+  if (posts && posts?.length === 0) {
+    renderResultNotFound(true);
+  } else {
+    renderPosts(posts, true);
+  }
+};
+
+const renderEmptySearch = (emptyFlag) => {
+  const postListContainerElement = document.getElementById(
+    "post-list-container"
+  );
+  // const loadMoreBtn = document.getElementById("load-more");
+
+  if (getCookie("writeSearchParameters") || emptyFlag) {
+    clearCookie("writeSearchParameters");
+  }
+  toggleDisplay(postListContainerElement, !emptyFlag, !emptyFlag ? "grid" : "");
+  // toggleDisplay(loadMoreBtn, !emptyFlag);
+  renderResultNotFound(emptyFlag);
+};
+
+const handleSearch = async (event, cookieName) => {
+  if (event) {
+    event.preventDefault();
+  }
+  const loaderContainer = document.getElementById("loader");
+  toggleDisplay(loaderContainer, true);
+  renderResultNotFound(false);
+
+  if (!searchBarTag?.value?.trim()) {
+    await handleEmptySearch();
+    renderEmptySearch(false);
+    return;
+  } else {
+    renderEmptySearch(false);
+    const searchQuery = getSearchQueryParameters(
+      searchBarTag.value,
+      cookieName
+    );
+
+    const posts = await handleSearchResults(
+      searchQuery,
+      true,
+      true,
+      "profile_page",
+      "profile_totalPages"
+    );
+
+    toggleDisplay(loaderContainer, false);
+
+    if (posts && posts?.length === 0) {
+      renderEmptySearch(true);
+      renderResultNotFound(true);
+    } else {
+      renderPosts(posts, true);
+    }
+  }
+};
+
+const handleLoadMore = async () => {
+  const loadMoreLoader = document.getElementById("load-more-loader");
+
+  toggleDisplay(loadMoreBtn, false);
+  toggleDisplay(loadMoreLoader, true);
+
+  const page = parseInt(getCookie("page")) + 1;
+  const totalPages = getCookie("totalPages");
+
+  const searchQuery = getSearchQueryParameters(
+    getCookie("writeSearchParameters") || ""
+  );
+
+  const { posts } = await fetchPosts(
+    page,
+    8,
+    searchQuery?.title,
+    searchQuery?.tags,
+    getQueryParams(location.href)?.username || getCookie("username")
+  );
+
+  setPageCookie(page);
+
+  if (posts?.length === 0) {
+    toggleDisplay(loadMoreBtn, false);
+    toggleDisplay(loadMoreLoader, false);
+  } else if (posts) {
+    toggleDisplay(
+      loadMoreBtn,
+      !(getCookie("page") === getCookie("totalPages"))
+    );
+    toggleDisplay(loadMoreLoader, false);
+    renderPosts(posts);
+  } else {
+    toggleDisplay(loadMoreBtn, true);
+    toggleDisplay(loadMoreLoader, false);
+    alert("something went wrong please try again");
   }
 };
 
@@ -403,12 +447,17 @@ window.onload = async () => {
   }
 };
 
+// search-bar sections
+
 searchIconTag.addEventListener("click", (e) => {
-  handleSearch(e, "profileSearchParameters",true);
+  handleSearch(e, "profileSearchParameters");
 });
+
 searchBarFormTag.addEventListener("submit", (e) => {
-  handleSearch(e, "profileSearchParameters",true);
+  handleSearch(e, "profileSearchParameters");
 });
+
+// loadmore-scetions
 
 const loadMoreBtn = document.getElementById("load-more");
 
@@ -428,7 +477,6 @@ editBioBtn.addEventListener("click", async (e) => {
   const bioTextArea = document.getElementById("edit-bio-textarea");
   const bio = document.getElementById("bio");
   const editLoader = document.getElementById("edit-loader");
-
 
   if (e.target.classList.contains("edit")) {
     toggleDisplay(cancelBioBtn, true);
@@ -560,4 +608,3 @@ const handleFollowBtn = async (e) => {
 };
 
 followBtnTag.addEventListener("click", handleFollowBtn);
-

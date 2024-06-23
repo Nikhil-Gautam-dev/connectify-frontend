@@ -16,15 +16,7 @@ import { POST_URL } from "../config.js";
 const searchBarFormTag = document.getElementById("search-bar-form");
 const searchBarTag = document.getElementById("search-bar");
 const searchIconTag = document.getElementById("search-icon");
-const loginbtns = document.getElementsByClassName("login-btn");
-const token = getCookie("accessToken");
 const postListContainerElement = document.getElementById("post-list-container");
-
-Array.from(loginbtns).forEach((btn) => {
-  btn.addEventListener("click", () => {
-    window.location.href = "./login.html";
-  });
-});
 
 const fetchPosts = async (page, limit, title, tags, author) => {
   let queries = "";
@@ -39,6 +31,8 @@ const fetchPosts = async (page, limit, title, tags, author) => {
   }
   const URL =
     POST_URL + `query/search/?page=${page || 1}&limit=${limit || 8}${queries}`;
+
+  const token = getCookie("accessToken");
 
   let posts;
   let totalPages;
@@ -66,15 +60,10 @@ const fetchPosts = async (page, limit, title, tags, author) => {
 
 const renderLoginErrInfo = () => {
   const avatarContainer = document.getElementById("avatar-li");
-  const loginbtns = document.getElementsByClassName("login-btn");
   const postSection = document.getElementById("posts");
-  const notLoginSection = document.getElementById("not-login-section");
 
-  avatarContainer.style.display = "none";
-  loginbtns[0].classList.add("display-flex");
-  loginbtns[1].classList.add("display-flex");
-  postSection.classList.add("display-none");
-  notLoginSection.classList.add("display-flex");
+  toggleDisplay(avatarContainer, false);
+  toggleDisplay(postSection, false);
 };
 
 const renderPostSection = () => {
@@ -107,6 +96,7 @@ const createDelEdit = (postId) => {
 
   return delEditContainerTag;
 };
+
 const createPostElement = (
   postId,
   author,
@@ -149,7 +139,7 @@ const createPostElement = (
   yearTag.classList.add("year", "p-card");
   imgElement.classList.add("year", "p-card");
 
-  authorTag.innerText = author;
+  authorTag.innerText = author + " |";
   monthTag.innerText = month;
   dateTag.innerText = date + ",";
   yearTag.innerText = year;
@@ -226,12 +216,13 @@ const renderEmptySearch = (emptyFlag) => {
   toggleDisplay(loadMoreBtn, !emptyFlag);
   renderResultNotFound(emptyFlag);
 };
+
 const getSearchQueryParameters = (search, cookieName) => {
-  if (getCookie(cookieName || "writeSearchParameters")) {
-    clearCookie(cookieName || "writeSearchParameters");
-  }
   if (!search) {
     return null;
+  }
+  if (getCookie(cookieName || "writeSearchParameters")) {
+    clearCookie(cookieName || "writeSearchParameters");
   }
 
   setCookieWithExpirationInSeconds(
