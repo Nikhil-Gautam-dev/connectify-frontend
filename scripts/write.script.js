@@ -10,8 +10,6 @@ import { customHeader } from "./footerAndHeader.script.js";
 const form = document.getElementById("form");
 
 const createOrUpdatePost = async (postId, method, data) => {
-  console.log(data);
-
   const token = getCookie("accessToken");
 
   const URL = POST_URL + postId;
@@ -25,7 +23,6 @@ const createOrUpdatePost = async (postId, method, data) => {
     body: JSON.stringify(data),
   })
     .then((res) => {
-      console.log(res.status);
       if (res.status === 201) {
         return res.json();
       }
@@ -113,9 +110,14 @@ const getPost = async (postId) => {
   return post;
 };
 
-const tinyMcePlugin = () => {
+const tinyMcePlugin = (content) => {
   tinymce.init({
     selector: "textarea",
+    setup: function (editor) {
+      editor.on("init", function () {
+        editor.setContent(content || "Write your content here !");
+      });
+    },
     resize: "both",
     menubar: "",
     plugins: "autoresize",
@@ -141,21 +143,16 @@ const renderLoginPage = (loginFlag) => {
   toggleDisplay(loaderDiv, false);
 };
 
-const renderTextEditor = () => {
-  const contentArea = document.getElementById("content-area");
+const renderTextEditor = (content) => {
   const textAreaLoaderDiv = document.getElementById("textarea-loader");
 
-  toggleDisplay(contentArea, false);
-  toggleDisplay(textAreaLoaderDiv, true);
-  tinyMcePlugin();
-  toggleDisplay(contentArea, true);
+  tinyMcePlugin(content);
   toggleDisplay(textAreaLoaderDiv, false);
 };
 
 const renderPostUpdate = (post) => {
   const title = document.getElementById("title");
   const tags = document.getElementById("tags");
-  const contentArea = document.getElementById("content-area");
   const createBtn = document.getElementById("create-btn");
 
   createBtn.value = "update";
@@ -167,7 +164,6 @@ const renderPostUpdate = (post) => {
   }
 
   tags.value = temp;
-  contentArea.innerText = post.content;
 };
 
 const handleForm = async (event) => {
@@ -181,8 +177,6 @@ const handleForm = async (event) => {
   toggleDisplay(loaderDiv, true);
 
   const data = getData();
-
-  console.log(data);
 
   const createPost = await createOrUpdatePost(
     toUpdate ? getQueryParams(currUrl)?.postId : "",
@@ -201,13 +195,11 @@ const handleForm = async (event) => {
 
   const file = document.getElementById("postImg")?.files[0];
   if (file) {
-    const fileUploaded = await uploadImage(createPost._id, file);
+    const fileUploaded = await uploadImage(createPost.data._id, file);
     if (!fileUploaded) {
       alert("something went wrong while uploading the file");
     }
   }
-
-  console.log(createPost);
 
   window.location.href = `../pages/posts.html?postId=${createPost.data._id}`;
 };
@@ -219,12 +211,17 @@ window.onload = async () => {
   if (!isUserLoggedIn()) {
     renderLoginPage(true);
   } else {
+    const textAreaLoaderDiv = document.getElementById("textarea-loader");
+    toggleDisplay(textAreaLoaderDiv, true);
     renderLoginPage(false);
     const { edit, postId } = getQueryParams(document.location.href);
-    renderTextEditor();
+    let content;
     if (edit === "true" && postId) {
       const post = await getPost(postId);
       renderPostUpdate(post);
+      content = post.content;
     }
+
+    renderTextEditor(content || "");
   }
 };

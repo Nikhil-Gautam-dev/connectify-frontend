@@ -126,6 +126,7 @@ nav {
         height: 50px;
         margin: 0px;
         border-radius: 50%;
+        padding: 5px;
     }
 
     .login-btn,

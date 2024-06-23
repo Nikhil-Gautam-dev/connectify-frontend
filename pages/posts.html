@@ -1,82 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../style/posts.style.css" />
-    
-    <link rel="stylesheet" href="../style/footerAndHeader.style.css">
-    <link rel="stylesheet" href="../style/post.mobile.style.css">
+
+    <link rel="stylesheet" href="../style/footerAndHeader.style.css" />
+    <link rel="stylesheet" href="../style/post.mobile.style.css" />
     <script type="module" src="../scripts/post.script.js"></script>
     <title>post-page</title>
-</head>
+  </head>
 
-<body>
-    <div class="main" id="main">
-    </div>
+  <body>
+    <div class="main" id="main"></div>
 
-<section class="dynamic-data">
-    
-    <section class="post-section">
+    <section class="dynamic-data">
+      <section class="post-section">
         <div class="title-container">
-            <h1 id="title">How to be good at coding ?</h1>
+          <h1 id="title">How to be good at coding ?</h1>
         </div>
 
         <section class="user-info-section">
-            <div class="user-info">
-                <div class="user-img-title-container">
-                    <span><img src="../assests/avatar.jpg" alt="avatar" id="writer-avatar"/></span>
-                    <div class="username-follower-container">
-                        <div class="username-follow-btn-container">
-                            <div class="username" id="username"></div>
-                            <span>|</span>
-                            <div class="follow-btn-container" id="follow-btn-container">
-                                <span id="follow-btn"></span>
-                                <div class="follow-loader-container" id="follow-loader">
-                                    <span class="loader"></span>
-                                  </div>
-                            </div>
-                        </div>
-                        <span class="published-date">
-                            <span class="month" id="month">may</span>
-                            <span class="date" id="date">3,</span>
-                            <span class="year" id="year">2003</span>
-                          </span>
+          <div class="user-info">
+            <div class="user-img-title-container">
+              <span
+                ><img
+                  src="../assests/avatar.jpg"
+                  alt="avatar"
+                  id="writer-avatar"
+              /></span>
+              <div class="username-follower-container">
+                <div class="username-follow-btn-container">
+                  <div class="username" id="username"></div>
+                  <span>|</span>
+                  <div class="follow-btn-container" id="follow-btn-container">
+                    <span id="follow-btn"></span>
+                    <div class="follow-loader-container" id="follow-loader">
+                      <span class="loader"></span>
                     </div>
+                  </div>
                 </div>
-    
-                
+                <span class="published-date">
+                  <span class="month" id="month">may</span>
+                  <span class="date" id="date">3,</span>
+                  <span class="year" id="year">2003</span>
+                </span>
+              </div>
             </div>
+          </div>
         </section>
 
         <div class="img-container">
-            <img src="../assests/bg2.jpg" alt="" id="postImg">
+          <img src="../assests/no-img.png" alt="" id="postImg" />
         </div>
-       
-       <div class="u-content-container">
-        <div class="content-container">
-            <p id="content">
 
-            </p>
-           </div>
-       </div>
+        <div class="u-content-container">
+          <div class="content-container">
+            <p id="content"></p>
+          </div>
+        </div>
+      </section>
 
-    </section>
-
-    <section class="not-login-section" id="not-login-section">
+      <section class="not-login-section" id="not-login-section">
         <h1>404</h1>
         <p>OOPS! You are not logged in !</p>
         <button class="login-btn">click to login</button>
-    </section>
+      </section>
 
-    <section class="err-info" id="err-info">
+      <section class="err-info" id="err-info">
         <h1>Something went wrong kindly refresh !</h1>
-    </section>
-    <div class="loader-container" id="loader">
+      </section>
+      <div class="loader-container" id="loader">
         <span class="loader"></span>
       </div>
-</section>
-</body>
-
+    </section>
+  </body>
 </html>

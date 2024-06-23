@@ -91,10 +91,12 @@ const getDateSeparated = (dateString) => {
   return { month, date: date.getDate(), year: date.getFullYear() };
 };
 
-const toggleDisplay = (element, none,style) => {
-  element.style.display = !none? "none" : style ? style:"flex"
+const toggleDisplay = (element, none, style) => {
+  if (!element) {
+    return;
+  }
+  element.style.display = !none ? "none" : style ? style : "flex";
 };
-
 
 export {
   currentPageOutline,

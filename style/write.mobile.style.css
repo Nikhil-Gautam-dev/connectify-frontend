@@ -45,6 +45,9 @@
     }
 
 
+    .content-container>textarea {
+        display: none;
+    }
 
     input {
         font-size: 18px;
@@ -85,6 +88,12 @@
         width: auto;
     }
 
+    .loader {
+        height: 24px;
+        width: 24px;
+        border: 2px solid black;
 
+        border-bottom-color: transparent;
+    }
 
 }
