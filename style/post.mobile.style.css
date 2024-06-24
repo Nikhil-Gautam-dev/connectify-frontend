@@ -52,6 +52,7 @@
 
     .user-img-title-container>span>img {
         width: 50px;
+        object-fit: contain;
     }
 
     .img-container {
