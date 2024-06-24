@@ -288,6 +288,8 @@ const handleUsersAndPost = async () => {
       renderRefreshErrElements(true);
     } else {
       const user = users[0];
+      renderUserInfo(user, user.username === getCookie("username"));
+      isFollowed = (await renderFollowBtn(user)) || false;
 
       const searchQuery = getSearchQueryParameters(
         getCookie("profileSearchParameters") || "",
@@ -309,11 +311,12 @@ const handleUsersAndPost = async () => {
       toggleDisplay(loaderContainer, false);
 
       if (posts && posts?.length === 0) {
-        renderRefreshErrElements(true);
+        const loadMoreBtn = document.getElementById("load-more");
+        toggleDisplay(loadMoreBtn, false);
+        renderResultNotFound(true);
       } else {
-        renderUserInfo(user, user.username === getCookie("username"));
+        renderResultNotFound(false);
         renderPosts(posts, true, user.username === getCookie("username"));
-        isFollowed = (await renderFollowBtn(user)) || false;
       }
     }
   }
@@ -337,8 +340,11 @@ const handleEmptySearch = async () => {
   );
 
   toggleDisplay(loaderContainer, false);
+  console.log(posts);
 
   if (posts && posts?.length === 0) {
+    const loadMoreBtn = document.getElementById("load-more");
+    toggleDisplay(loadMoreBtn, false);
     renderResultNotFound(true);
   } else {
     renderPosts(posts, true);
@@ -349,14 +355,11 @@ const renderEmptySearch = (emptyFlag) => {
   const postListContainerElement = document.getElementById(
     "post-list-container"
   );
-  // const loadMoreBtn = document.getElementById("load-more");
 
   if (getCookie("writeSearchParameters") || emptyFlag) {
     clearCookie("writeSearchParameters");
   }
   toggleDisplay(postListContainerElement, !emptyFlag, !emptyFlag ? "grid" : "");
-  // toggleDisplay(loadMoreBtn, !emptyFlag);
-  renderResultNotFound(emptyFlag);
 };
 
 const handleSearch = async (event, cookieName) => {
@@ -389,6 +392,8 @@ const handleSearch = async (event, cookieName) => {
     toggleDisplay(loaderContainer, false);
 
     if (posts && posts?.length === 0) {
+      const loadMoreBtn = document.getElementById("load-more");
+      toggleDisplay(loadMoreBtn, false);
       renderEmptySearch(true);
       renderResultNotFound(true);
     } else {
