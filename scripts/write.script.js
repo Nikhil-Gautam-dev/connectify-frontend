@@ -23,7 +23,8 @@ const createOrUpdatePost = async (postId, method, data) => {
     body: JSON.stringify(data),
   })
     .then((res) => {
-      if (res.status === 201) {
+      console.log(res.status);
+      if (res.ok) {
         return res.json();
       }
       return null;
@@ -118,12 +119,38 @@ const tinyMcePlugin = (content) => {
         editor.setContent(content || "Write your content here !");
       });
     },
-    resize: "both",
+    min_height: 100,
+    resize: "vertical",
     menubar: "",
-    plugins: "autoresize",
-    autoresize_bottom_margin: 10,
+    plugins: [
+      "advlist",
+      "autolink",
+      "link",
+      "image",
+      "lists",
+      "charmap",
+      "preview",
+      "anchor",
+      "pagebreak",
+      "searchreplace",
+      "wordcount",
+      "visualblocks",
+      "code",
+      "fullscreen",
+      "insertdatetime",
+      "media",
+      "table",
+      "emoticons",
+      "help",
+      "autoresize",
+    ],
     toolbar:
-      "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
+      "undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | " +
+      "bullist numlist outdent indent | link image | print preview media fullscreen | " +
+      "forecolor backcolor emoticons | help",
+    content_style:
+      "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }",
+    autoresize_bottom_margin: 10,
     tinycomments_mode: "embedded",
     tinycomments_author: "Author name",
     mergetags_list: [
@@ -192,6 +219,8 @@ const handleForm = async (event) => {
     );
     return;
   }
+
+  console.log(createPost);
 
   const file = document.getElementById("postImg")?.files[0];
   if (file) {

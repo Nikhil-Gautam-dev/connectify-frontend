@@ -3,6 +3,7 @@
     margin: 0px;
     box-sizing: border-box;
     color: black;
+    font-family: "Open Sans", "sans-serif";
 }
 
 .main {
@@ -297,12 +298,12 @@ input {
     color: rgb(39, 39, 39);
 }
 
-#avatar-li{
+#avatar-li {
     width: 25%;
     position: relative;
 }
 
-#avatar{
+#avatar {
     width: 25%;
     aspect-ratio: 1;
     border-radius: 50%;

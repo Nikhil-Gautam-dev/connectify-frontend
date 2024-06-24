@@ -3,6 +3,7 @@
     margin: 0px;
     box-sizing: border-box;
     color: black;
+    font-family: "Open Sans", "sans-serif";
 }
 
 
@@ -126,7 +127,6 @@ nav {
         height: 50px;
         margin: 0px;
         border-radius: 50%;
-        padding: 5px;
     }
 
     .login-btn,

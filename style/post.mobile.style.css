@@ -1,4 +1,7 @@
 @media screen and (max-width: 480px) {
+    * {
+        font-family: "Open Sans", "sans-serif";
+    }
 
     .dynamic-data {
         margin-top: 0px;

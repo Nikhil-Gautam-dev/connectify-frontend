@@ -18,7 +18,7 @@ const customHeader = () => {
     <li class="login-btn" id="login-btn"><a href="../pages/login.html">login</a></li>
     <li id="home"><a href="../pages/home.html">home</a></li>
     <li id="write"><a href="../pages/write.html">write</a></li>
-    <li id="posts"><a href="#posts">posts</a></li>
+    <li id="posts"><a href="../pages/home.html#posts">posts</a></li>
     <li id="about"><a href="#">about</a></li>
     <li class="logout-btn" id="logout-btn"><a>logout</a></li>
     </ul>
