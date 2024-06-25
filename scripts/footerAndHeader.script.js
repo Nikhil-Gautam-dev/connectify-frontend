@@ -14,7 +14,7 @@ const customHeader = () => {
       <img src="../assests/h-w-icon.png" alt="">
     </span>
     <ul class="nav-item-list" id="nav-item-list">
-    <span id="avatar-li"><a href="../pages/profile.html"><img src="../assests/avatar.jpg" alt="avatar" id="avatar"/></a></span>
+    <li id="avatar-li"><a href="../pages/profile.html"><img src="../assests/avatar.jpg" alt="avatar" id="avatar"/></a></li>
     <li class="login-btn" id="login-btn"><a href="../pages/login.html">login</a></li>
     <li id="home"><a href="../pages/home.html">home</a></li>
     <li id="write"><a href="../pages/write.html">write</a></li>

@@ -60,10 +60,12 @@ const fetchPosts = async (page, limit, title, tags, author) => {
 
 const renderLoginErrInfo = () => {
   const avatarContainer = document.getElementById("avatar-li");
-  const postSection = document.getElementById("posts");
+  const postSection = document.querySelector("section#posts");
+
+  console.log(postSection);
 
   toggleDisplay(avatarContainer, false);
-  toggleDisplay(postSection, false);
+  // toggleDisplay(postSection, false);
 };
 
 const renderPostSection = () => {
@@ -207,13 +209,11 @@ const renderEmptySearch = (emptyFlag) => {
   const postListContainerElement = document.getElementById(
     "post-list-container"
   );
-  const loadMoreBtn = document.getElementById("load-more");
 
   if (getCookie("writeSearchParameters") || emptyFlag) {
     clearCookie("writeSearchParameters");
   }
-  toggleDisplay(postListContainerElement, !emptyFlag, !emptyFlag ? "grid" : "");
-  toggleDisplay(loadMoreBtn, !emptyFlag);
+  toggleDisplay(postListContainerElement, !emptyFlag);
   renderResultNotFound(emptyFlag);
 };
 
@@ -240,6 +240,21 @@ const getSearchQueryParameters = (search, cookieName) => {
   }
 
   return searchParameters;
+};
+
+const setPageCookie = (page, totalPages) => {
+  if (getCookie("page")) {
+    clearCookie("page");
+  }
+
+  if (totalPages) {
+    if (getCookie("totalPages")) {
+      clearCookie("totalPages");
+    }
+    setCookieWithExpirationInSeconds("totalPages", totalPages, 86400);
+  }
+
+  setCookieWithExpirationInSeconds("page", page, 86400);
 };
 
 const handleSearchResults = async (
@@ -276,24 +291,11 @@ const handleSearchResults = async (
 
   const loadMoreBtn = document.getElementById("load-more");
   loadMoreBtn.style.display =
-    getCookie(totalPageCookieName || "totalPages") != page ? "flex" : "none";
+    getCookie(totalPageCookieName || "totalPages") != page.toString()
+      ? "flex"
+      : "none";
 
   return postsData.posts;
-};
-
-const setPageCookie = (page, totalPages) => {
-  if (getCookie("page")) {
-    clearCookie("page");
-  }
-
-  if (totalPages) {
-    if (getCookie("totalPages")) {
-      clearCookie("totalPages");
-    }
-    setCookieWithExpirationInSeconds("totalPages", totalPages, 86400);
-  }
-
-  setCookieWithExpirationInSeconds("page", page, 86400);
 };
 
 const handleLoadMore = async () => {
@@ -339,11 +341,11 @@ const handleEmptySearch = async () => {
   const loaderContainer = document.getElementById("loader");
   toggleDisplay(loaderContainer, true);
 
-  if (getCookie("pages")) clearCookie("pages");
+  if (getCookie("page")) clearCookie("page");
   if (getCookie("totalPages")) clearCookie("totalPages");
   if (getCookie("writeSearchParameters")) clearCookie("writeSearchParameters");
 
-  const posts = await handleSearchResults("", false, setPageCookie, false);
+  const posts = await handleSearchResults("", true, setPageCookie, false);
 
   toggleDisplay(loaderContainer, false);
   if (posts && posts?.length === 0) {
@@ -394,6 +396,7 @@ window.onload = async function () {
   customHeader();
   renderResultNotFound(false);
   if (!isUserLoggedIn()) {
+    console.log("not logged in");
     renderLoginErrInfo();
   } else {
     renderPostSection();
@@ -452,7 +455,6 @@ const handlePostRedirect = (event) => {
 };
 
 postListContainerElement.addEventListener("click", async (e) => {
-  console.log(e.target);
   if (e.target.classList.contains("p-card")) {
     handlePostRedirect(e);
   }

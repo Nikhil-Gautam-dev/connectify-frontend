@@ -359,7 +359,7 @@ const renderEmptySearch = (emptyFlag) => {
   if (getCookie("writeSearchParameters") || emptyFlag) {
     clearCookie("writeSearchParameters");
   }
-  toggleDisplay(postListContainerElement, !emptyFlag, !emptyFlag ? "grid" : "");
+  toggleDisplay(postListContainerElement, !emptyFlag);
 };
 
 const handleSearch = async (event, cookieName) => {

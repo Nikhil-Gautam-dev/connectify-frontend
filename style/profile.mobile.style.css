@@ -4,6 +4,10 @@
 
     }
 
+    body {
+        padding: 0px;
+    }
+
     .username {
         font-size: 2rem;
         color: black;
