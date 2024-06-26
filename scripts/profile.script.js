@@ -27,6 +27,9 @@ const cancelBioBtn = document.getElementById("cancel-bio-btn");
 const searchBarFormTag = document.getElementById("search-bar-form");
 const searchBarTag = document.getElementById("search-bar");
 const searchIconTag = document.getElementById("search-icon");
+const newProfileImgUploadBtn = document.getElementById(
+  "upload-new-profile-img"
+);
 let isFollowed;
 
 const followBtnTag = document.getElementById("follow-btn");
@@ -67,6 +70,35 @@ const fetchUserInfo = async (username) => {
   return user;
 };
 
+const updateProfile = async (file) => {
+  const URL = USER_URL + "avatar";
+
+  const token = getCookie("accessToken");
+
+  const newFormData = new FormData();
+  newFormData.append("avatar", file);
+
+  const check = await fetch(URL, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: newFormData,
+  })
+    .then((res) => {
+      if (res.ok) {
+        return true;
+      }
+      return false;
+    })
+
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return check;
+};
+
 const renderUserInfo = (user, isUser) => {
   const usernameElement = document.getElementById("username");
   const profileAvatarElement = document.getElementById("profile-img");
@@ -84,6 +116,7 @@ const renderUserInfo = (user, isUser) => {
   bio.innerText = user?.bio || "This is your bio section you can edit it !";
   toggleDisplay(cancelBioBtn, false);
   toggleDisplay(editBioBtn, isUser);
+  toggleDisplay(newProfileImgUploadBtn, isUser);
 };
 
 const deletePost = async (postId) => {
@@ -487,7 +520,7 @@ editBioBtn.addEventListener("click", async (e) => {
     toggleDisplay(cancelBioBtn, true);
     e.target.classList.remove("edit");
     e.target.classList.remove("fa-pen-to-square");
-    e.target.classList.add("fa-check");
+    e.target.classList.add("fa-floppy-disk");
     e.target.classList.add("save");
 
     toggleDisplay(bioTextArea, true);
@@ -514,7 +547,7 @@ editBioBtn.addEventListener("click", async (e) => {
         toggleDisplay(bioTextArea, false);
         toggleDisplay(bio, true);
         e.target.classList.remove("save");
-        e.target.classList.remove("fa-check");
+        e.target.classList.remove("fa-flopy-disk");
         e.target.classList.add("fa-pen-to-square");
         e.target.classList.add("edit");
         toggleDisplay(editLoader, false);
@@ -589,6 +622,37 @@ const updateFollowerCount = async (username) => {
   followersCountElement.innerText = user.followers.length;
 };
 
+const updateProfileInDOM = async () => {
+  const username = getCookie("username");
+
+  if (!username) {
+    alert("something went wrong please refrsh!");
+    return;
+  }
+
+  const users = await fetchUserInfo(username);
+
+  if (users.length != 1) {
+    alert("something went wrong please refrsh!");
+    return;
+  }
+  const user = users[0];
+  const profileAvatarElement = document.getElementById("profile-img");
+
+  profileAvatarElement.setAttribute(
+    "src",
+    user.avatar || "../assests/avatar.jpg"
+  );
+
+  const cookieUsername = getCookie("username");
+  clearCookie("username");
+  setCookieWithExpirationInSeconds(
+    "avatar",
+    user.avatar || cookieUsername,
+    86400
+  );
+};
+
 const handleFollowBtn = async (e) => {
   let followBtn = e.target;
   const loader = document.getElementById("follow-loader");
@@ -613,3 +677,38 @@ const handleFollowBtn = async (e) => {
 };
 
 followBtnTag.addEventListener("click", handleFollowBtn);
+
+const newProfileImgInput = document.getElementById("new-profile-img");
+
+newProfileImgUploadBtn.addEventListener("click", () => {
+  newProfileImgInput.click();
+  console.log("upload");
+});
+
+newProfileImgInput.addEventListener("change", async (e) => {
+  const files = e.target.files;
+  const profileLoader = document.getElementById("profile-loader");
+  toggleDisplay(profileLoader, true);
+  toggleDisplay(newProfileImgUploadBtn, false);
+
+  if (files.length === 1) {
+    const isProfileImgUpdated = await updateProfile(files[0]);
+
+    if (!isProfileImgUpdated) {
+      alert("something went wrong please try agian");
+      toggleDisplay(profileLoader, false);
+      toggleDisplay(newProfileImgUploadBtn, true);
+
+      return;
+    }
+    await updateProfileInDOM();
+    toggleDisplay(profileLoader, false);
+    toggleDisplay(newProfileImgUploadBtn, true);
+    console.log("file uploaded");
+    return;
+  }
+  alert("no file found!");
+  toggleDisplay(profileLoader, false);
+  toggleDisplay(profileAvatarElement, true);
+  toggleDisplay(newProfileImgUploadBtn, true);
+});

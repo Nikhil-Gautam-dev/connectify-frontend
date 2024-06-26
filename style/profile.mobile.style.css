@@ -28,6 +28,10 @@
         object-fit: contain;
     }
 
+    .profile-loader-container {
+        height: 25%;
+    }
+
     .hero {
         padding: 40px 20px;
         border: 2px solid #dcdcdc;
