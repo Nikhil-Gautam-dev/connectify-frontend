@@ -23,7 +23,6 @@ const createOrUpdatePost = async (postId, method, data) => {
     body: JSON.stringify(data),
   })
     .then((res) => {
-      console.log(res.status);
       if (res.ok) {
         return res.json();
       }
@@ -219,8 +218,6 @@ const handleForm = async (event) => {
     );
     return;
   }
-
-  console.log(createPost);
 
   const file = document.getElementById("postImg")?.files[0];
   if (file) {

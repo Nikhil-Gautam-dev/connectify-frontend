@@ -62,8 +62,6 @@ const renderLoginErrInfo = () => {
   const avatarContainer = document.getElementById("avatar-li");
   const postSection = document.querySelector("section#posts");
 
-  console.log(postSection);
-
   toggleDisplay(avatarContainer, false);
   // toggleDisplay(postSection, false);
 };
@@ -396,7 +394,6 @@ window.onload = async function () {
   customHeader();
   renderResultNotFound(false);
   if (!isUserLoggedIn()) {
-    console.log("not logged in");
     renderLoginErrInfo();
   } else {
     renderPostSection();

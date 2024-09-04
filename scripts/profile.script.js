@@ -373,7 +373,6 @@ const handleEmptySearch = async () => {
   );
 
   toggleDisplay(loaderContainer, false);
-  console.log(posts);
 
   if (posts && posts?.length === 0) {
     const loadMoreBtn = document.getElementById("load-more");
@@ -682,7 +681,6 @@ const newProfileImgInput = document.getElementById("new-profile-img");
 
 newProfileImgUploadBtn.addEventListener("click", () => {
   newProfileImgInput.click();
-  console.log("upload");
 });
 
 newProfileImgInput.addEventListener("change", async (e) => {
@@ -704,7 +702,6 @@ newProfileImgInput.addEventListener("change", async (e) => {
     await updateProfileInDOM();
     toggleDisplay(profileLoader, false);
     toggleDisplay(newProfileImgUploadBtn, true);
-    console.log("file uploaded");
     return;
   }
   alert("no file found!");

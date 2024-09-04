@@ -30,7 +30,6 @@ const postLogoutRequest = async () => {
     },
   })
     .then((res) => {
-      console.log(res);
       if (res.status == 201) {
         return true;
       }
