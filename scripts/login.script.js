@@ -85,6 +85,10 @@ const getFormData = () => {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
+  if (!username.trim()) {
+    return null;
+  }
+
   return { username, password };
 };
 
@@ -93,7 +97,17 @@ const handleLoginForm = async (event) => {
   renderLoadingScreen(true);
   renderSubmitBtn(true, "#0084db");
 
-  const { username, password } = getFormData();
+  const formData = getFormData();
+
+  if (!formData) {
+    alert("username can't be empty !");
+    renderLoadingScreen(false);
+    renderSubmitBtn(false, "#22577a");
+    location.reload();
+    return;
+  }
+
+  const { username, password } = formData;
 
   const res = await postLoginRequest(username, password);
 

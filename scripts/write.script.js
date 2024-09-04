@@ -69,6 +69,10 @@ const getData = () => {
   const title = document.getElementById("title").value;
   const tagsElement = document.getElementById("tags").value.split(",");
 
+  if (!content.trim() || !title.trim() || !tagsElement.trim()) {
+    return null;
+  }
+
   const tags = tagsElement.map((tags) => {
     return tags.trim();
   });
@@ -204,6 +208,12 @@ const handleForm = async (event) => {
 
   const data = getData();
 
+  if (!data) {
+    alert("All fields are required and can't be empty !");
+    toggleDisplay(loaderDiv, false);
+    return;
+  }
+
   const createPost = await createOrUpdatePost(
     toUpdate ? getQueryParams(currUrl)?.postId : "",
     toUpdate ? "PUT" : "POST",
@@ -216,6 +226,8 @@ const handleForm = async (event) => {
         (toUpdate ? " updating" : " creating") +
         " the post please retry"
     );
+    toggleDisplay(loaderDiv, false);
+
     return;
   }
 

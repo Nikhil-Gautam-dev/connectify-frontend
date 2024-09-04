@@ -222,6 +222,7 @@ const renderFollowBtn = async (user) => {
     return null;
   }
   followBtn.innerText = isFollowed ? "unfollow" : "follow";
+  followBtn.style.backgroundColor = isFollowed ? "red" : "green";
   toggleDisplay(followBtn, true);
   return isFollowed;
 };
@@ -667,6 +668,7 @@ const handleFollowBtn = async (e) => {
     followBtn.style.display = "flex";
     loader.style.display = "none";
     followBtn.innerText = isFollowed ? "follow" : "unfollow";
+    followBtn.style.backgroundColor = isFollowed ? "green" : "red";
     isFollowed = !isFollowed;
   } else {
     followBtn.style.display = "flex";

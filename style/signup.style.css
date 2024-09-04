@@ -143,13 +143,15 @@ input:focus {
     background: black;
 }
 
-#reg-btn {
+#reg-btn,
+#login-btn {
     color: #0648dd;
     border-bottom: 1px solid #0648dd;
     cursor: pointer;
 }
 
-#reg-btn:hover {
+#reg-btn:hover,
+#login-btn:hover {
     color: #3b71ee;
     border-bottom: 1px solid #3b71ee;
 }

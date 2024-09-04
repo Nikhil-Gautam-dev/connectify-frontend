@@ -16,6 +16,8 @@
     .follower-container>span {
         color: black;
         font-size: 1rem;
+        color: green;
+        font-weight: 600;
     }
 
     .hero-content {
@@ -291,9 +293,13 @@
     }
 
     #follow-btn {
-        font-size: 1.2rem;
-        color: #22577a;
+        font-size: 16px;
+        cursor: pointer;
         display: none;
+        background: #22577a;
+        color: white;
+        padding: 2px 12px;
+        border-radius: 10px;
     }
 
     #follow-loader {

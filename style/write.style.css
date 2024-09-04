@@ -66,6 +66,10 @@ input {
     height: 100%;
 }
 
+.content-container>div {
+    height: 200px;
+}
+
 .content-container>textarea {
     display: none;
     width: 100%;
