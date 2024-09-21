@@ -69,7 +69,7 @@ const getData = () => {
   const title = document.getElementById("title").value;
   const tagsElement = document.getElementById("tags").value.split(",");
 
-  if (!content.trim() || !title.trim() || !tagsElement.trim()) {
+  if (!content.trim() || !title.trim()) {
     return null;
   }
 
